@@ -7,7 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EcommerceController;
+use App\Http\Controllers\DatingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GlobalController;
@@ -161,6 +161,13 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
 Route::middleware(['auth'])->group(function(){
     Route::post('/book-ticket', [CustomerController::class, 'bookTicket'])->name('book.ticket');
     Route::post('/order', [OrderController::class, 'store'])->name('store');
+
+    // Create Account for dating account
+    Route::get('/create-account', [DatingController::class, 'createAccount'])->name('create.account');
+});
+
+Route::middleware(['auth', 'datting.middleware'])->group(function(){
+    Route::get('/find-your-date', [DatingController::class, 'findYourDate'])->name('find.your.date');
 });
 
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank.you');
