@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -122,10 +123,43 @@ class OrderController extends Controller
             session()->flush('success', 'All Item Cart Clear Successfully !');
                 
             $data['type'] = "success";
-                $data['message'] = "Product Meta Added Successfuly!.";
+                $data['message'] = "Product Added Successfuly!.";
                 $data['icon'] = 'mdi-check-all';
+                try {
+                    /*Send Notification to the user*/
+                    $userFirst = User::where('email', 'admin@gmail.com')->where('role', 'admin')->first();
+                    $user = User::find($userFirst->id);
+    //mae sb change kar raha hun mujhy 10 min do tou den ap 
+                    $body = 'New Order has been recieved with Order Number#' . $ids;
+                    $details = [
+                        'subject' => 'New Order has been recieved with Order Number#' . $ids,
+                        'greeting' => 'Hi ' . $user->first_name .' '. $user->last_name . ',',
+                        'Order' => $Order,
+                        'body' => $body,
+                        'action_title' => '',
+                        'action_url' => '#',
+                        'thanks' => 'Thank you for your Order!',
+                    ];
+                    $user->notify(new \App\Notifications\OrderNotification($details));
+                    /// Ye kon change karege....???
+    
+                    $data['thankyou'] = true;
+                    $data['type'] = "success";
+                    $data['message'] = "Order transaction has been completed successfully!.";
+    
+                    return redirect()->route('thank.you')->with($data);
+    
+                } catch (Exception $e) {
+                    Log::info($e->getMessage());
+                    
+                    $data['thankyou'] = true;
+                    $data['type'] = "info";
+                    $data['message'] = "Order has been completed successfully, Failed to Send emails.";
 
-                return redirect()->route('front.product.promotion')->with($data);
+                    // session()->flush('success', 'All Item Cart Clear Successfully !');
+                    return redirect()->route('thank.you')->with($data);
+                }
+               
             } else {
                 $data['type'] = "danger";
                 $data['message'] = "Failed to Add Product Meta, please try again.";
