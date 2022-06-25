@@ -1,0 +1,28 @@
+.breadcrumb-item+.breadcrumb-item::before {
+    content: '/';
+}
+
+
+/*#sidebar-menu ul li a i {
+    color: #0440fb !important;
+}
+#sidebar-menu ul li.mm-active .active i {
+    color: #0440fb!important;
+}*/
+
+.dashboard-main-menu .dropdown-icon-item img {
+    height: 64px;
+}
+
+.dashboard-main-menu a:hover {
+    border-color: #F01000;
+}
+
+.nav-tabs-custom .nav-item .nav-link.active {
+    border: solid lightgray 1px !important;
+}
+
+.logo-lg img {
+    width: auto;
+    height: 120px;
+}
