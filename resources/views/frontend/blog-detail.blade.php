@@ -22,19 +22,21 @@
                         <div class="paras mt-4"> {!! $post->content ?? '-' !!}</div>
                         <div class="user-response mt-4">
                             <h4>Add Your Response</h4>
-                            <form class="mt-4">
+                            <form class="mt-4" method="POST" action="{{route('comments.store')}}" enctype="multipart/form-data"
+                            novalidate>
+                            @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Name*">
+                                        <input type="text" name="name" placeholder="Name*">
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="email" placeholder="Email*">
+                                        <input type="email" name="email" placeholder="Email*">
                                     </div>
                                     <div class="col-lg-12 mt-4">
-                                        <textarea rows="6" placeholder="Message*"></textarea>
+                                        <textarea rows="6" name="message" placeholder="Message*"></textarea>
                                     </div>
                                     <div class="col-lg-12 mt-3">
-                                        <button type="button">Post Comment</button>
+                                        <button type="submit">Post Comment</button>
                                     </div>
                                 </div>
                             </form>

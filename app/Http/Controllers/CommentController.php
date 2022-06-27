@@ -95,7 +95,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        abort(404);
+        // dd($request->all());
         // $this->validate($request, [
         //     'name' => 'required',
         //     'page_id' => 'required',
@@ -106,20 +106,23 @@ class CommentController extends Controller
         $Comment->user_id = Auth::user()->id;
         $Comment->parent_id = $request->parent_id;
         $Comment->post_id = $request->post_id;
-        $Comment->comment = $request->comment;
+        $Comment->comment = $request->message;
+        $Comment->name = $request->name;
+        $Comment->email = $request->email;
+
 
         if ($Comment->save()) {
             $data['type'] = "success";
             $data['message'] = "Comments Added Successfuly!.";
             $data['icon'] = 'mdi-check-all';
 
-            return redirect()->route('comments.index')->with($data);
+            return redirect()->route('thank.you')->with($data);
         } else {
             $data['type'] = "danger";
             $data['message'] = "Failed to Add Page, please try again.";
             $data['icon'] = 'mdi-block-helper';
 
-            return redirect()->route('comments.index')->withInput()->with($data);
+            return redirect()->route('thank.yous')->withInput()->with($data);
         }
     }
 
