@@ -1,13 +1,23 @@
 @extends('layouts.frontend.master')
 
 @section('title')
-    {{ 'Login' }}
+    {{ 'Register' }}
 @endsection
 
+@push('styles')
+    <style>
+        .parsley-required,
+        .parsley-equalto {
+            color: red;
+        }
+    </style>
+@endpush
+
 @section('content')
-    <div class="main-container">
+    <div class="main-container volunteer-signup-page">
         <x-mobile-view-slide />
-        <x-home-banner />
+        <x-create-account />
+        <x-footer />
     </div>
 @endsection
 

@@ -43,22 +43,6 @@
         <x-top-bar />
         <x-side-bar />
     </header>
-    {{-- <div class="black-bg"></div>
-    <div class="form-div form-popup">
-        <form>
-            <div class="section-heading">
-                <h5>Join Our</h5>
-                <h4>Membership</h4>
-                <p>Special Offers For Join With Us</p>
-            </div>
-            <input type="text" placeholder="Name">
-            <input type="email" class="mt-3" placeholder="Email">
-            <button class="mt-3">
-                <a href="#">Submit Now</a>
-            </button>
-            <p class="black-text mt-4">*By Subscription To Our Terms & Condition And Privacy & Cookies Policy.</p>
-        </form>
-    </div> --}}
 
     @yield('content')
 
@@ -100,24 +84,6 @@
             $(".mob-menu-slide").toggleClass("show")
         })
 
-        $(document).ready(function() {
-            setTimeout(popUpDisplay, 2000)
-        })
-
-        function popUpDisplay() {
-            $(".form-popup").addClass("showThis");
-            $(".black-bg").addClass("showThis");
-        }
-
-
-        $(document).on("click", ".black-bg", function() {
-            popUpHide();
-        })
-
-        function popUpHide() {
-            $(".form-popup").removeClass("showThis");
-            $(".black-bg").removeClass("showThis");
-        }
     </script>
     @stack('scripts')
 </body>
