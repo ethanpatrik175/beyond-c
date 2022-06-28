@@ -11,4 +11,6 @@ class Comment extends Model
     protected $table = 'post_comments';
     use HasFactory;
     use SoftDeletes;
+
+    
 }

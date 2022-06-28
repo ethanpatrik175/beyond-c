@@ -63,7 +63,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Comments</th>
-                                        <th>Post Name</th>
+                                        <th>Post</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         <th>Status Change</th>
@@ -89,17 +89,17 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: false,
-                ajax: route('comments.index'),
+                ajax: route('status.non.approved'),
                 columns: [{
                     data: 'id',
                     name: 'id'
                 }, {
                     data: 'comment',
                     name: 'comment'
-                },  {
+                }, {
                     data: 'title',
                     name: 'title'
-                },{
+                },   {
                     data: 'status',
                     name: 'status'
                 }, {

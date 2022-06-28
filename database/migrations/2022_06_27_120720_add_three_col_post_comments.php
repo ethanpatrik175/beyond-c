@@ -16,7 +16,7 @@ class AddThreeColPostComments extends Migration
         Schema::table('post_comments', function (Blueprint $table) {
             $table->string('name')->after('post_id');
             $table->string('email')->after('name');
-            $table->string('status')->default('new')->after('email');
+            $table->string('status')->default('Un-Approved')->after('email');
         });
     }
 
