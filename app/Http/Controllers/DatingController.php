@@ -144,4 +144,40 @@ class DatingController extends Controller
             return response($data);
         }
     }
+
+    public function uploadImage(Request $request)
+    {
+        // if($request->session()->get('avatar') !== '')
+        // {
+        //     $data['type'] = 'error';
+        //     $data['message'] = 'Profile Image has already been uploaded!';
+        //     return response()->json($data);
+        // }
+
+        $request->validate([
+            'file' => 'required|image|max:1024'
+        ]);
+
+        if($request->hasFile('file'))
+        {
+            $image = $request->file('file');
+            $imageName = $image->getClientOriginalName();
+            if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName)){
+                $request->session()->put('avatar', $imageName);
+            }
+        }
+
+        return response()->json(['success'=>$imageName]);
+    }
+
+    public function removeImage(Request $request)
+    {
+        $filename =  $request->get('filename');
+        $path = asset('assets/frontend/images/users/'.Auth::user()->id.'/'.$filename);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        
+        return response()->json(['message'=>'Image has been removed successfully!']);
+    }
 }

@@ -178,6 +178,10 @@ Route::middleware(['auth'])->name('dating.')->group(function(){
     Route::post('/dating/step-two-process', [DatingController::class, 'stepTwoProcess'])->name('step.two.process');
     Route::post('/dating/step-three-process', [DatingController::class, 'stepThreeProcess'])->name('step.three.process');
     Route::post('/dating/step-four-process', [DatingController::class, 'stepFourProcess'])->name('step.four.process');
+    Route::post('/dating/final-step-process', [DatingController::class, 'finalStepProcess'])->name('final.step.process');
+
+    Route::post('/dating/upload-image', [DatingController::class, 'uploadImage'])->name('upload.image.process');
+    Route::post('/dating/remove-image', [DatingController::class, 'removeImage'])->name('upload.remove.image.process');
 
     Route::post('/dating/restore', [DatingController::class, 'restoreStep'])->name('restore.step');
     Route::post('/dating/step-back', [DatingController::class, 'stepBack'])->name('step.back');

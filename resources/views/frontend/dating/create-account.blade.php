@@ -11,13 +11,19 @@
             color: red;
         }
 
-        .invalid-feedback{
+        .invalid-feedback {
             font-weight: bold !important;
         }
-        .red-button{
+
+        .red-button {
             color: #ffffff;
         }
+
+        .dz-message>span{
+            color: rgb(255, 0, 0);
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" />
 @endpush
 
 @section('content')
@@ -48,7 +54,7 @@
                     </div>
                     <div class="offset-lg-1 d-none d-lg-block col-lg-4">
                         <div class="form-div p-3">
-                            @if(Session::has('stepStatus'))
+                            @if (Session::has('stepStatus'))
                                 @include(Session::get('stepStatus'));
                             @else
                                 @include('frontend.dating.step-one')
@@ -64,12 +70,18 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
-    <script src="{{ asset('assets/frontend/js/datting-script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
+    </script>
+    
     <script src="{{ asset('assets/backend/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/pages/form-validation.init.js') }}"></script>
     <!-- form mask -->
     <script src="{{ asset('assets/backend/libs/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
     <!-- form mask init -->
     <script src="{{ asset('assets/backend/js/pages/form-mask.init.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
+    <script src="{{ asset('assets/frontend/js/datting-script.js') }}"></script>
+    <script>
+
+    </script>
 @endpush
