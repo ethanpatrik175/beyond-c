@@ -16,6 +16,7 @@ use App\Http\Controllers\SpeakerController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\OrderController;
@@ -158,6 +159,15 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
      Route::resource('orders', OrderController::class);
      Route::post('updated', [OrderController::class, 'update'])->name('order.updated');
      Route::get('order-history/{id}', [OrderController::class, 'orderHistory'])->name('order.history');
+    //Contact us
+     Route::resource('contact-us', ContactController::class);
+     Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
+     Route::post('/reomve-message', [ContactController::class, 'removeMessage'])->name('remove.message');
+
+
+    //  Route::post('/brand/updates-status-process', [BrandController::class, 'updateStatus'])->name('brand.update.status');
+    //  Route::get('brand/trash', [BrandController::class, 'trash'])->name('brand.trash');
+    //  Route::post('/brand/restore', [BrandController::class, 'restore'])->name('brand.restore');
 });
 /**End Admin Routes */
 

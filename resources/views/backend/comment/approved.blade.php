@@ -136,7 +136,7 @@
                     var type = result.type;
 
                     if (status == "Approved") {
-                        $('.comments_status#switch' + id).attr('value', "Non-Approved");
+                        $('.comments_status#switch' + id).attr('value', "Un-Approved");
                     } else {
                         $('.comments_status#switch' + id).attr('value', "Approved");
                     }

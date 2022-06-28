@@ -17,29 +17,53 @@
                         </div>
                     </div>
                 </div>
-                <form>
-                    <div class="row mt-md-5 mt-2">
-                        <div class="col-lg-6">
-                            <input type="text" placeholder="Your Name*">
-                            <input type="text" placeholder="Your Email*" class="mt-4">
+                <div>
+                    <form method="POST" action="{{ route('contact-us.store') }}" class="needs-validation" novalidate>
+                        @csrf
+                        <div class="row mt-md-5 mt-2">
+                            <div class="col-lg-6">
+                                <input type="text" name="name" placeholder="Your Name*" required>
+                                <div class="invalid-feedback">
+                                    Please enter valid name.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" name="email" placeholder="Your Email*" required>
+                                <div class="invalid-feedback">
+                                    Please enter valid email.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" name="lastname" placeholder="Last Name*" class="mt-4" required>
+                                <div class="invalid-feedback">
+                                    Please enter valid lastname.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="number" name="number" placeholder="number*" class="mt-4" required>
+                                <div class="invalid-feedback">
+                                    Please enter valid number.
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="col-lg-6 mt-4 mt-lg-0">
-                            <input type="text" placeholder="Last Name*">
-                            <select class="mt-4">
-                                <option value="" disabled selected>Inquiry Select</option>
-                            </select>
+                        <div class="row mt-md-5">
+                            <div class="col-lg-12 ">
+                                <textarea name="message" id="" cols="30" rows="10" placeholder="Your Message" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter valid message.
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-12 mt-4">
-                            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+                        <div class="links mt-4 text-center">
+                            <button type="submit">Submit Now</button>
                         </div>
-                    </div>
-                    <div class="links mt-4 text-center">
-                        <button type="submit">Submit Now</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
             </div>
         </section>
-        <section class="map">
+        {{-- <section class="map">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 px-0">
@@ -50,7 +74,11 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
         <x-footer />
     </div>
 @endsection
+@push('scripts')
+    <script src="{{ asset('assets/backend/libs/parsleyjs/parsley.min.js') }}"></script>
+    <script src="{{ asset('assets/backend/js/pages/form-validation.init.js') }}"></script>
+@endpush

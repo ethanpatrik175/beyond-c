@@ -103,6 +103,12 @@
                             <span>Order</span>
                         </a>
                     </li>
+                    <li class="@if (Route::is('contact-us.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('contact-us.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Contact/Query</span>
+                        </a>
+                    </li>
                 @else
                 @endif
             </ul>
