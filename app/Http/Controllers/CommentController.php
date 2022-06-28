@@ -21,50 +21,56 @@ class CommentController extends Controller
     {
         $this->buttons = '';
         $this->buttons .= '<a href="' . route("comments.index") . '" class="btn btn-sm btn-success">ALL Comments</a> &nbsp;';
-        // $this->buttons .= '<a href="'.route("comments.create").'" class="btn btn-sm btn-primary">ADD NEW</a> &nbsp;';
-        // $this->buttons .= '<a href="'.route('comment.trash').'" class="btn btn-sm btn-danger">TRASH</a>';
+        $this->buttons .= '<a href="'.route("status.approved").'" class="btn btn-sm btn-primary">Approved Comment </a> &nbsp;';
+        $this->buttons .= '<a href="'.route('status.non.approved').'" class="btn btn-sm btn-danger">Un-Approved Comment</a>';
         $this->section = "Comments";
     }
 
     public function index(Request $request)
     {
+        
         if ($request->ajax()) {
             $data = DB::table('post_comments')
                 ->join('users', 'post_comments.user_id', '=', 'users.id')
-
-                ->select('post_comments.*', 'users.first_name', 'users.last_name')
+                ->leftJoin('posts as a', 'post_comments.post_id', '=', 'a.id')
+                ->select('post_comments.*', 'users.first_name', 'users.last_name','a.title')
                 ->whereNull('post_comments.deleted_at')
                 ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('comments.edit', $row->id) . '" target="_blank"><i title="Edit" class="fas fa-edit font-size-18"></i></a>';
-                    $btn .= ' <a href="javascript:void(0);" class="text-danger remove" data-id="' . $row->id . '"><i title="Delete" class="fas fa-trash-alt font-size-18"></i></a>';
+                    // $btn .= ' <a href="javascript:void(0);" class="text-danger remove" data-id="' . $row->id . '"><i title="Delete" class="fas fa-trash-alt font-size-18"></i></a>';
                     // $btn .= ' <a href="'.route('service.images',['services', $row->id]).'" target="_blank" class="text-warning" data-id="'.$row->id.'"><i title="More Images" class="fas fa-images font-size-18"></i></a>';
                     return $btn;
                 })
-                ->addColumn('created_at', function ($row) {
-                    return date('d-M-Y', strtotime($row->created_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->created_at)->diffForHumans() . '</label>';
-                })
-                ->addColumn('is_active', function ($row) {
-                    if ($row->is_active == '0') {
-                        $btn0 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="1"/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                // ->addColumn('created_at', function ($row) {
+                //     return date('d-M-Y', strtotime($row->created_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->created_at)->diffForHumans() . '</label>';
+                // })
+                ->addColumn('status_order', function ($row) {
+                    if ($row->status == 'Un-Approved') {
+                        $btn0 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Approved"/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
                         return $btn0;
-                    } elseif ($row->is_active == '1') {
-
-                        $btn1 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="0" checked/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                    } elseif ($row->status == 'Approved') {
+                        $btn1 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Un-Approved" checked/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
                         return $btn1;
                     }
                 })
                
                 ->addColumn('comment', function ($row) {
-                    return Str::of($row->comment)->limit(100);
+                    return Str::of($row->comment)->limit(50);
                 })
-                ->addColumn('user_id', function ($row) {
-                    return $row->first_name . ' ' . $row->last_name . ' <br />(' . Str::of($row->user_id)->upper() . ')';
+                ->addColumn('title', function ($row) {
+                    return Str::of($row->title)->limit(50);
+                })
+                ->addColumn('status', function ($row) {
+                    return Str::of($row->status);
+                })
+                ->addColumn('created_at', function ($row) {
+                    return date('d-M-Y', strtotime($row->created_at)).'<br/>'.$row->first_name . ' ' . $row->last_name ;
                 })
                
-                ->rawColumns(['action', 'created_at', 'is_active', 'user_id', 'updated_by'])
+                ->rawColumns(['action', 'created_at','updated_by' ,'status','status_order','title'])
                 ->make(true);
         }
 
@@ -74,6 +80,12 @@ class CommentController extends Controller
 
         return view('backend.comment.all', $data);
     }
+    
+
+
+
+
+
 
     public function create()
     {
@@ -96,14 +108,14 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        // $this->validate($request, [
-        //     'name' => 'required',
-        //     'page_id' => 'required',
-        //     'order' => 'required',
-        // ]);
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'message' => 'required|max:200',
+        ]);
 
         $Comment = new Comment();
-        $Comment->user_id = Auth::user()->id;
+        // $Comment->user_id = Auth::user()->id;
         $Comment->parent_id = $request->parent_id;
         $Comment->post_id = $request->post_id;
         $Comment->comment = $request->message;
@@ -116,13 +128,13 @@ class CommentController extends Controller
             $data['message'] = "Comments Added Successfuly!.";
             $data['icon'] = 'mdi-check-all';
 
-            return redirect()->route('thank.you')->with($data);
+            return response()->json(['success'=>'Your comment has been saved successfully, it will posted as it is approved by admin.']);
         } else {
             $data['type'] = "danger";
-            $data['message'] = "Failed to Add Page, please try again.";
+            $data['message'] = "Failed to Add Comments, please try again.";
             $data['icon'] = 'mdi-block-helper';
 
-            return redirect()->route('thank.yous')->withInput()->with($data);
+            return response()->json(['success'=>'Failed to Add Comments']);
         }
     }
 
@@ -145,7 +157,7 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        abort(404);
+        
         $data['shortcut_buttons'] = $this->buttons;
         $data['section'] = $this->section;
         $data['page_title'] = 'Edit & Update COMMENTS';
@@ -166,7 +178,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        abort(404);
+    //    dd($request->all());
         $Comment = Comment::findOrFail($id);
         //     $this->validate($request, [
         //         'name' => 'required',
@@ -176,10 +188,7 @@ class CommentController extends Controller
         //  ]);
 
 
-        $Comment->parent_id = $request->parent_id;
-        $Comment->post_id = $request->post_id;
-        $Comment->comment = $request->comment;
-
+        $Comment->status = $request->status;
         if ($Comment->save()) {
             $data['type'] = "success";
             $data['message'] = "Comment Updated Successfuly!.";
@@ -227,10 +236,7 @@ class CommentController extends Controller
 
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0);" class="restore" data-id="' . $row->id . '"><i title="Restore" class="fas fa-trash-restore-alt font-size-18"></i></a>';
-                    return $btn;
-                })
+             
                 ->addColumn('deleted_at', function ($row) {
                     return date('d-M-Y', strtotime($row->deleted_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->deleted_at)->diffForHumans() . '</label>';
                 })
@@ -274,13 +280,13 @@ class CommentController extends Controller
     }
     public function updateStatus(Request $request)
     {
-        abort(404);
-        // dd($request->all());
-        $update = Comment::where('id', $request->id)->update(['is_active' => $request->is_active]);
+       
+       
+        $update = Comment::where('id', $request->id)->update(['status' => $request->status]);
 
         if ($update) {
-            $request->is_active == '1' ? $alertType = 'success' : $alertType = 'info';
-            $request->is_active == '1' ? $message = 'Comment Activated Successfuly!' : $message = 'Comment Deactivated Successfuly!';
+            $request->status == 'Approved' ? $alertType = 'success' : $alertType = 'info';
+            $request->status == 'Approved' ? $message = 'Comment Approved Successfuly!' : $message = 'Comment Un-Approved Successfuly!';
 
             $notification = array(
                 'message' => $message,
@@ -296,5 +302,112 @@ class CommentController extends Controller
         }
 
         echo json_encode($notification);
+    }
+    public function approved(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = DB::table('post_comments')
+                ->join('users', 'post_comments.user_id', '=', 'users.id')
+                ->leftJoin('posts as a', 'post_comments.post_id', '=', 'a.id')
+                ->select('post_comments.*', 'users.first_name', 'users.last_name' ,'a.title')
+                ->where('post_comments.status',"Approved")
+                ->whereNull('post_comments.deleted_at')
+                ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route('comments.edit', $row->id) . '" target="_blank"><i title="Edit" class="fas fa-edit font-size-18"></i></a>';
+                    // $btn .= ' <a href="javascript:void(0);" class="text-danger remove" data-id="' . $row->id . '"><i title="Delete" class="fas fa-trash-alt font-size-18"></i></a>';
+                    // $btn .= ' <a href="'.route('service.images',['services', $row->id]).'" target="_blank" class="text-warning" data-id="'.$row->id.'"><i title="More Images" class="fas fa-images font-size-18"></i></a>';
+                    return $btn;
+                })
+                // ->addColumn('created_at', function ($row) {
+                //     return date('d-M-Y', strtotime($row->created_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->created_at)->diffForHumans() . '</label>';
+                // })
+                ->addColumn('status_order', function ($row) {
+                    if ($row->status == 'Un-Approved') {
+                        $btn0 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Approved"/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                        return $btn0;
+                    } elseif ($row->status == 'Approved') {
+                        $btn1 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Un-Approved" checked/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                        return $btn1;
+                    }
+                })
+                ->addColumn('title', function ($row) {
+                    return Str::of($row->title)->limit(50);
+                })
+                ->addColumn('comment', function ($row) {
+                    return Str::of($row->comment)->limit(50);
+                })
+                ->addColumn('status', function ($row) {
+                    return Str::of($row->status);
+                })
+                ->addColumn('created_at', function ($row) {
+                    return date('d-M-Y', strtotime($row->created_at)).'<br/>'.$row->first_name . ' ' . $row->last_name ;
+                })
+               
+                ->rawColumns(['action', 'created_at','updated_by' ,'status','status_order','title'])
+                ->make(true);
+        }
+
+        $data['shortcut_buttons'] = $this->buttons;
+        $data['section'] = $this->section;
+        $data['page_title'] = 'All Comments';
+
+        return view('backend.comment.approved', $data);
+    }
+    public function non_approved(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = DB::table('post_comments')
+                ->join('users', 'post_comments.user_id', '=', 'users.id')
+                ->leftJoin('posts as a', 'post_comments.post_id', '=', 'a.id')
+                ->select('post_comments.*', 'users.first_name', 'users.last_name','a.title')
+                ->where('post_comments.status',"Un-Approved")
+                ->whereNull('post_comments.deleted_at')
+                ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route('comments.edit', $row->id) . '" target="_blank"><i title="Edit" class="fas fa-edit font-size-18"></i></a>';
+                    // $btn .= ' <a href="javascript:void(0);" class="text-danger remove" data-id="' . $row->id . '"><i title="Delete" class="fas fa-trash-alt font-size-18"></i></a>';
+                    // $btn .= ' <a href="'.route('service.images',['services', $row->id]).'" target="_blank" class="text-warning" data-id="'.$row->id.'"><i title="More Images" class="fas fa-images font-size-18"></i></a>';
+                    return $btn;
+                })
+                // ->addColumn('created_at', function ($row) {
+                //     return date('d-M-Y', strtotime($row->created_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->created_at)->diffForHumans() . '</label>';
+                // })
+                ->addColumn('status_order', function ($row) {
+                    if ($row->status == 'Un-Approved') {
+                        $btn0 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Approved"/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                        return $btn0;
+                    } elseif ($row->status == 'Approved') {
+                        $btn1 = '<div class="square-switch"><input type="checkbox" id="switch' . $row->id . '" class="comments_status" switch="bool" data-id="' . $row->id . '" value="Un-Approved" checked/><label for="switch' . $row->id . '" data-on-label="Yes" data-off-label="No"></label></div>';
+                        return $btn1;
+                    }
+                })
+               
+                ->addColumn('comment', function ($row) {
+                    return Str::of($row->comment)->limit(50);
+                })
+                ->addColumn('title', function ($row) {
+                    return Str::of($row->title)->limit(50);
+                })
+                ->addColumn('status', function ($row) {
+                    return Str::of($row->status);
+                })
+                ->addColumn('created_at', function ($row) {
+                    return date('d-M-Y', strtotime($row->created_at)).'<br/>'.$row->first_name . ' ' . $row->last_name ;
+                })
+               
+                ->rawColumns(['action', 'created_at','updated_by' ,'status','status_order','title'])
+                ->make(true);
+        }
+
+        $data['shortcut_buttons'] = $this->buttons;
+        $data['section'] = $this->section;
+        $data['page_title'] = 'All Comments';
+
+        return view('backend.comment.nonapproved', $data);
     }
 }

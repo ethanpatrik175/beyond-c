@@ -123,7 +123,10 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     Route::post('/category/restore', [CategoryController::class, 'restoreCategory'])->name('category.restore');
     //Comments
     Route::resource('comments', CommentController::class);
-    // Route::post('/comment/updates-status-process', [CommentController::class, 'updateStatus'])->name('comment.update.status');
+    Route::post('status-update', [CommentController::class, 'updateStatus'])->name('status.update');
+    Route::get('approved', [CommentController::class, 'approved'])->name('status.approved');
+    Route::get('non-approved', [CommentController::class, 'non_approved'])->name('status.non.approved');
+
     // Route::get('comment/trash', [CommentController::class, 'trash'])->name('comment.trash');
     // Route::post('/comment/restore', [CommentController::class, 'restorecomments'])->name('comment.restore');
      //Product_Category
@@ -171,7 +174,7 @@ Route::middleware(['auth', 'datting.middleware'])->group(function(){
 });
 
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank.you');
-
+Route::post('/comment-store', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/create-slug', [GlobalController::class, 'createSlug'])->name('create.slug');
 Route::get('/file-path',  [GlobalController::class, 'getPath'])->name('get.assets.path');
 Route::get('/clear', [GlobalController::class, 'clear'])->name('clear');

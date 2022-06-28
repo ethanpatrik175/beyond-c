@@ -58,40 +58,16 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Parents </label>
-                                            <select data-placeholder="Select Parent" name="parent_id"
-                                                class="form-control select2">
-                                                <option value="{{$Comments->parent_id ?? ''}}">{{$Comments->comment}}</option>
-                                                @foreach($parents as $repo)
-                                                <option value="{{$repo->id}}">{{$repo->comment}}</option>
-                                                @endforeach
-                                            </select>
+                                            <label class="form-label">Status </label>
+                                            <<select id="order_status" name="status"
+                                            class="form-control" required>
+                                            <option value="{{$Comments->status}}"
+                                                selected>{{$Comments->status}}</option>
+                                            <option value="new">new</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Post</label>
-                                            <select data-placeholder="Select Post" name="post_id"
-                                                class="form-control select2">
-                                                <option value="{{$post_id[0]['id'] ?? ''}}">{{$post_id[0]['title']}}</option>
-                                                @foreach($post as $repo)
-                                                <option value="{{$repo->id}}">{{$repo->title}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="mb-3">
-                                            <label for="comment" class="form-label">comment</label>
-                                            <textarea rows="4" class="form-control" name="comment" id="comment"
-                                                placeholder="Content here"
-                                                required>{!! $Comments->comment !!}</textarea>
-                                            <div class="invalid-feedback">
-                                                Please enter valid comment.
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>

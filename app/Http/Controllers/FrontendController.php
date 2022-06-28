@@ -6,6 +6,7 @@ use App\Models\Donation;
 use App\Models\Event;
 use App\Models\post;
 use App\Models\Product;
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\ProductCategory;
 use App\Models\RelatedProduct;
@@ -39,6 +40,8 @@ class FrontendController extends Controller
     public function blogDetail($slug)
     {
         $data['post'] = post::with(['user', 'category'])->whereIsActive(1)->whereNull('deleted_at')->whereSlug($slug)->first();
+        $data['comment'] = Comment::where('post_id', $data['post']->id)->where('status', "Approved")->get();
+        // dd($data['comment']);
         $data['pageTitle'] = "Blog Detail";
         $data['bannerTitle'] = "Blog Detail";
         return view('frontend.blog-detail', $data);

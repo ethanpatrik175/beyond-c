@@ -63,7 +63,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Comments</th>
-                                        <th>Post Name</th>
+                                        <th>Post</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         <th>Status Change</th>
@@ -89,7 +89,7 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: false,
-                ajax: route('comments.index'),
+                ajax: route('status.approved'),
                 columns: [{
                     data: 'id',
                     name: 'id'
@@ -99,7 +99,7 @@
                 },  {
                     data: 'title',
                     name: 'title'
-                },{
+                },  {
                     data: 'status',
                     name: 'status'
                 }, {
@@ -136,7 +136,7 @@
                     var type = result.type;
 
                     if (status == "Approved") {
-                        $('.comments_status#switch' + id).attr('value', "Un-Approved");
+                        $('.comments_status#switch' + id).attr('value', "Non-Approved");
                     } else {
                         $('.comments_status#switch' + id).attr('value', "Approved");
                     }
