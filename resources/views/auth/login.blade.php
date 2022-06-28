@@ -4,6 +4,14 @@
     {{ 'Login' }}
 @endsection
 
+@push('styles')
+    <style>
+        .invalid-feedback{
+            font-weight: bold !important;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="main-container">
         <x-mobile-view-slide />

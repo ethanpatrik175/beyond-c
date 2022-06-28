@@ -91,7 +91,7 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group text-start">
-                                            <label for="first_name">First Name</label>
+                                            <label for="first_name" class="black-text mb-1">First Name</label>
                                             <input type="text" id="first_name" name="first_name"
                                                 data-parsley-required-message="Please enter first name"
                                                 placeholder="First Name" value="{{ old('first_name') }}" required
@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group text-start">
-                                            <label for="last_name">Last Name</label>
+                                            <label for="last_name" class="black-text mb-1">Last Name</label>
                                             <input type="text" id="last_name" name="last_name" placeholder="Last Name"
                                                 value="{{ old('last_name') }}" />
                                             <div class="invalid-feedback">
@@ -108,9 +108,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12 mt-3">
                                         <div class="form-group text-start">
-                                            <label for="email">Email</label>
+                                            <label for="email" class="black-text mb-1">Email</label>
                                             <input type="email" id="email" name="email"
                                                 data-parsley-required-message="Enter valid email address"
                                                 placeholder="Email" value="{{ old('email') }}" required />
@@ -119,9 +119,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 mt-3">
                                         <div class="form-group text-start">
-                                            <label for="password">Password</label>
+                                            <label for="password" class="black-text mb-1">Password</label>
                                             <input type="password" id="password" name="password"
                                                 data-parsley-required-message="Enter Password" placeholder="Password"
                                                 required />
@@ -130,9 +130,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 mt-3">
                                         <div class="form-group text-start">
-                                            <label for="confirm_password">Confirm Password</label>
+                                            <label for="confirm_password" class="black-text mb-1">Confirm Password</label>
                                             <input type="password" id="confirm_password" name="confirm_password"
                                                 placeholder="Confirm Password"
                                                 data-parsley-required-message="Enter valid confirm password"

@@ -5,6 +5,11 @@
         .parsley-required,
         .parsley-equalto {
             color: red;
+            font-weight: bold !important;
+        }
+
+        .red-button{
+            color: #ffffff;
         }
     </style>
 @endpush

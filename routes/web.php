@@ -174,14 +174,32 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
 Route::middleware(['auth'])->group(function(){
     Route::post('/book-ticket', [CustomerController::class, 'bookTicket'])->name('book.ticket');
     Route::post('/order', [OrderController::class, 'store'])->name('store');
-
-    // Create Account for dating account
-    Route::get('/create-account', [DatingController::class, 'createAccount'])->name('create.account');
 });
 
+// Dating Routes Start
 Route::middleware(['auth', 'datting.middleware'])->group(function(){
     Route::get('/find-your-date', [DatingController::class, 'findYourDate'])->name('find.your.date');
 });
+
+Route::middleware(['auth'])->name('dating.')->group(function(){
+    // Create Account for dating account
+    Route::get('/create-account', [DatingController::class, 'createAccount'])->name('create.account');
+    Route::post('/dating/step-one-process', [DatingController::class, 'stepOneProcess'])->name('step.one.process');
+    Route::post('/dating/step-two-process', [DatingController::class, 'stepTwoProcess'])->name('step.two.process');
+    Route::post('/dating/step-three-process', [DatingController::class, 'stepThreeProcess'])->name('step.three.process');
+    Route::post('/dating/step-four-process', [DatingController::class, 'stepFourProcess'])->name('step.four.process');
+    Route::post('/dating/final-step-process', [DatingController::class, 'finalStepProcess'])->name('final.step.process');
+
+    Route::post('/dating/upload-image', [DatingController::class, 'uploadImage'])->name('upload.image.process');
+    Route::post('/dating/remove-image', [DatingController::class, 'removeImage'])->name('upload.remove.image.process');
+
+    Route::post('/dating/restore', [DatingController::class, 'restoreStep'])->name('restore.step');
+    Route::post('/dating/step-back', [DatingController::class, 'stepBack'])->name('step.back');
+});
+
+//Dating Routes End
+
+
 
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank.you');
 Route::post('/comment-store', [CommentController::class, 'store'])->name('comments.store');

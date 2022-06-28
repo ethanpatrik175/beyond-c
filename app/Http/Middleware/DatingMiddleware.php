@@ -23,7 +23,7 @@ class DatingMiddleware
             $dating = Dating::where('user_id', Auth::user()->id)->first();
             if(!$dating)
             {
-                return redirect()->route('create.account');
+                return redirect()->route('dating.create.account');
             }
             return $next($request);
         }
