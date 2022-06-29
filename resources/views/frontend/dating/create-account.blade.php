@@ -22,6 +22,31 @@
         .dz-message>span {
             color: rgb(255, 0, 0);
         }
+
+        .filepond--drop-label {
+            color: #4c4e53;
+        }
+
+        .filepond--label-action {
+            text-decoration-color: #babdc0;
+        }
+
+        .filepond--panel-root {
+            background-color: #edf0f4;
+        }
+
+
+        /**
+         * Page Styles
+         */
+        html {
+            padding: 20vh 0 0;
+        }
+
+        .filepond--root {
+            width: 170px;
+            margin: 0 auto;
+        }
     </style>
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" /> --}}
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
@@ -114,28 +139,62 @@
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
     </script>
     {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
-    {{-- <script src="https://unpkg.com/filepond-plugin-image-filter/dist/filepond-plugin-image-filter.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-image-filter/dist/filepond-plugin-image-filter.js"></script>
     {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
 
 
 
     <script>
-        FilePond.registerPlugin(FilePondPluginFileValidateType);
-        FilePond.registerPlugin(FilePondPluginImageCrop);
-        FilePond.registerPlugin(FilePondPluginImageEdit);
-        FilePond.registerPlugin(FilePondPluginImagePreview);
-        FilePond.registerPlugin(FilePondPluginImageResize);
-        FilePond.registerPlugin(FilePondPluginImageTransform);
-        FilePond.registerPlugin(FilePondPluginImageValidateSize);
-        FilePond.registerPlugin(FilePondPluginImageExifOrientation);
+        FilePond.registerPlugin(
+            FilePondPluginFileValidateType,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginImagePreview,
+            FilePondPluginImageCrop,
+            FilePondPluginImageResize,
+            FilePondPluginImageTransform,
+            FilePondPluginImageEdit
+        );
+
         // FilePond.registerPlugin(FilePondPluginImageFilter);
-       
+
         const input = document.querySelector('input[id="avatar"]');
 
 
         // create a FilePond instance at the fieldset element location
-        const pond = FilePond.create(input);
-       
+        const pond = FilePond.create(input, {
+            // allowMultiple: true,
+            imagePreviewHeight: 170,
+            imageResizeTargetWidth: 200,
+            imageResizeTargetHeight: 200,
+            stylePanelLayout: 'compact circle',
+            styleLoadIndicatorPosition: 'center bottom',
+            styleProgressIndicatorPosition: 'right bottom',
+            styleButtonRemoveItemPosition: 'left bottom',
+            styleButtonProcessItemPosition: 'right bottom',
+            imageCropAspectRatio: '1:1',
+            // imageResizeTargetWidth: 200,
+            // imageEditInstantEdit: true,
+            cropAspectRatioOptions: [
+            {
+                label: 'Free',
+                value: null,
+            },
+            {
+                label: 'Portrait',
+                value: 1.25,
+            },
+            {
+                label: 'Square',
+                value: 1,
+            },
+            {
+                label: 'Landscape',
+                value: 0.75,
+            },
+        ],
+            
+        });
+
         FilePond.setOptions({
             server: {
                 process: route('dating.upload.image.process'),
