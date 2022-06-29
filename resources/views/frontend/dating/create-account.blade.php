@@ -19,11 +19,15 @@
             color: #ffffff;
         }
 
-        .dz-message>span{
+        .dz-message>span {
             color: rgb(255, 0, 0);
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" /> --}}
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -72,16 +76,74 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
     </script>
-    
+
     <script src="{{ asset('assets/backend/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/pages/form-validation.init.js') }}"></script>
     <!-- form mask -->
     <script src="{{ asset('assets/backend/libs/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
     <!-- form mask init -->
     <script src="{{ asset('assets/backend/js/pages/form-mask.init.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script> --}}
     <script src="{{ asset('assets/frontend/js/datting-script.js') }}"></script>
-    <script>
+    <script></script>
+    <!-- include jQuery library -->
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> --}}
 
+    <!-- include FilePond library -->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+
+    <!-- include FilePond plugins -->
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+
+    <!-- include FilePond jQuery adapter -->
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js">
+    </script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+    {{-- <script src="https://unpkg.com/filepond-plugin-image-filter/dist/filepond-plugin-image-filter.js"></script> --}}
+    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
+
+
+
+    <script>
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        FilePond.registerPlugin(FilePondPluginImageCrop);
+        FilePond.registerPlugin(FilePondPluginImageEdit);
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+        FilePond.registerPlugin(FilePondPluginImageResize);
+        FilePond.registerPlugin(FilePondPluginImageTransform);
+        FilePond.registerPlugin(FilePondPluginImageValidateSize);
+        FilePond.registerPlugin(FilePondPluginImageExifOrientation);
+        // FilePond.registerPlugin(FilePondPluginImageFilter);
+       
+        const input = document.querySelector('input[id="avatar"]');
+
+
+        // create a FilePond instance at the fieldset element location
+        const pond = FilePond.create(input);
+       
+        FilePond.setOptions({
+            server: {
+                process: route('dating.upload.image.process'),
+                revert: route('dating.upload.remove.image.process'),
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        })
     </script>
 @endpush

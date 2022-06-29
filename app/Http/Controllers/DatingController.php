@@ -147,6 +147,7 @@ class DatingController extends Controller
 
     public function uploadImage(Request $request)
     {
+        // dd($request->all(), $request->filepond);
         // if($request->session()->get('avatar') !== '')
         // {
         //     $data['type'] = 'error';
@@ -154,13 +155,13 @@ class DatingController extends Controller
         //     return response()->json($data);
         // }
 
-        $request->validate([
-            'file' => 'required|image|max:1024'
-        ]);
+        // $request->validate([
+        //     'file' => 'required|image|max:1024'
+        // ]);
 
-        if($request->hasFile('file'))
+        if($request->hasFile('filepond'))
         {
-            $image = $request->file('file');
+            $image = $request->file('filepond');
             $imageName = $image->getClientOriginalName();
             if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName)){
                 $request->session()->put('avatar', $imageName);
