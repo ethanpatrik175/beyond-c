@@ -14,8 +14,17 @@ $(document).ready(function () {
                 if (response.type == "error") {
                     $('ul.listErrors').html('<li>' + response.message + '</li>');
                 } else {
-                    // $.getScript("../assets/frontend/js/filepond-script.js");
+                    // $("#filepond-script").remove();
+                    
+                    // unloadScript('../assets/frontend/js/filepond-script.js', 'js');
+                    // loadScript('../assets/frontend/js/filepond-script.js', 'js');
+
                     $('.form-div').html(response);
+
+                    // let r = (Math.random() + 1).toString(36).substring(2);
+                    // $(document).find('input[name="filepond"]').attr('id', r);
+                    $.getScript("../assets/frontend/js/filepond-script.js");
+                    
                 }
             },
             error: function (response) {
@@ -47,13 +56,21 @@ $(document).ready(function () {
                 success: function (response) {
                     $('.form-div').LoadingOverlay("hide", true);
 
-                    
+
 
                     if (response.type == "error") {
                         $('ul.listErrors').html('<li>' + response.message + '</li>');
                     } else {
+                        // $("#filepond-script").remove();
                         // $.getScript("../assets/frontend/js/filepond-script.js");
+                        // unloadScript('../assets/frontend/js/filepond-script.js', 'js');
+                        // loadScript('../assets/frontend/js/filepond-script.js', 'js');
+                        
                         $('.form-div').html(response);
+                        // let r = (Math.random() + 1).toString(36).substring(2);
+                        // $(document).find('input[name="filepond"]').attr('id', r);
+                        $.getScript("../assets/frontend/js/filepond-script.js");
+                        
                     }
                 },
                 error: function (response) {

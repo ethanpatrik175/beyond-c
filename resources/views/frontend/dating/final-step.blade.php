@@ -26,6 +26,7 @@
         <ul class="text-danger listErrors text-start mb-2"></ul>
         <div class="col-lg-12 mt-2">
             <div class="form-group text-start">
+                <label for="avatar" class="black-text mb-1">Avatar</label>
                 <input type="file" name="filepond" class="filepond demo-profile-picture" id="avatar"
                     accept="image/png, image/jpeg, image/gif"
                     data-label-idle="Drag &amp; Drop your picture or <span class='filepond--label-action'>Browse</span>"
@@ -35,16 +36,6 @@
                     data-style-progress-indicator-position="right bottom"
                     data-style-button-remove-item-position="left bottom"
                     data-style-button-process-item-position="right bottom">
-            </div>
-        </div>
-        <ul class="text-danger listErrors text-start mb-2"></ul>
-        <div class="col-lg-12 mt-2">
-            <div class="form-group text-start">
-                <label for="avatar" class="black-text mb-1">Avatar</label>
-                <input type="file" name="avatar" id="avatar" />
-                <div class="invalid-feedback">
-                    Upload your avatar here
-                </div>
             </div>
         </div>
 
@@ -62,9 +53,7 @@
         <button type="submit" class="red-button">Next </button>
         <div class="row mt-2">
             <div class="col-sm-6 text-start"><a href="javascript:void(0);" class="back">BACK</a></div>
-            <div class="col-sm-6 text-end skip">
-                <a href="javascript:void(0);" class="skip">SKIP</a>
-            </div>
+            <div class="col-sm-6 text-end skip"></div>
         </div>
         {{-- <p class="black-text mt-4">*By Subscription To Our Terms & Condition And Privacy &
             Cookies Policy.</p> --}}

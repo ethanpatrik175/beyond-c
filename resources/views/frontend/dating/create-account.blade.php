@@ -90,8 +90,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"> </script>
 
     <script src="{{ asset('assets/backend/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/pages/form-validation.init.js') }}"></script>
@@ -105,5 +104,5 @@
     <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
     <script src="{{ asset('assets/frontend/js/datting-script.js') }}"></script>
-    <script src="{{ asset('assets/frontend/js/filepond-script.js') }}"></script>
+    <script id="filepond-script" src="{{ asset('assets/frontend/js/filepond-script.js') }}"></script>
 @endpush

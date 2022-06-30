@@ -147,38 +147,38 @@ class DatingController extends Controller
 
     public function uploadImage(Request $request)
     {
-        // dd($request->all(), $request->filepond);
-        // if($request->session()->get('avatar') !== '')
-        // {
-        //     $data['type'] = 'error';
-        //     $data['message'] = 'Profile Image has already been uploaded!';
-        //     return response()->json($data);
-        // }
-
-        // $request->validate([
-        //     'file' => 'required|image|max:1024'
-        // ]);
+        $request->validate([
+            'filepond' => 'required|image|max:1024'
+        ]);
 
         if($request->hasFile('filepond'))
         {
             $image = $request->file('filepond');
             $imageName = $image->getClientOriginalName();
-            if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName)){
-                $request->session()->put('avatar', $imageName);
+            if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName))
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Profile Image uploaded successfully';
+                return response()->json($data);
             }
         }
 
-        return response()->json(['success'=>$imageName]);
+        return response()->json(['error'=>'Failed to upload image, please try again.']);
     }
 
     public function removeImage(Request $request)
     {
-        $filename =  $request->get('filename');
+        dd($request->all());
+
+        $filename =  $request->get('filepond');
         $path = asset('assets/frontend/images/users/'.Auth::user()->id.'/'.$filename);
+        dd($path, file_exists($path), $request->all());
         if (file_exists($path)) {
             unlink($path);
+            return response()->json(['message'=>'Image has been removed successfully!']);
         }
-        
-        return response()->json(['message'=>'Image has been removed successfully!']);
+        else{
+            return response()->json(['message'=>'Error Occured!']);
+        }
     }
 }
