@@ -14,6 +14,7 @@ $(document).ready(function () {
                 if (response.type == "error") {
                     $('ul.listErrors').html('<li>' + response.message + '</li>');
                 } else {
+                    // $.getScript("../assets/frontend/js/filepond-script.js");
                     $('.form-div').html(response);
                 }
             },
@@ -46,9 +47,12 @@ $(document).ready(function () {
                 success: function (response) {
                     $('.form-div').LoadingOverlay("hide", true);
 
+                    
+
                     if (response.type == "error") {
                         $('ul.listErrors').html('<li>' + response.message + '</li>');
                     } else {
+                        // $.getScript("../assets/frontend/js/filepond-script.js");
                         $('.form-div').html(response);
                     }
                 },
@@ -80,8 +84,6 @@ $(document).ready(function () {
 
     countCharacters('passion', 'passion-counter');
     countCharacters('about', 'about-counter');
-
-
 
     /*let stepStatus = $('input#step-status').val();
     if (stepStatus !== "") {
