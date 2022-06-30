@@ -424,9 +424,9 @@
                                                                         <select id="order_status" name="order_status"
                                                                             class="form-control" required>
                                                                             <option value="new" @if($order->order_status == 'new') {{ 'selected' }} @endif>New</option>
-                                                                            <option value="Pending">Pending</option>
-                                                                            <option value="Approved">Approved</option>
-                                                                            <option value="Delivered">Delivered</option>
+                                                                            <option value="Pending" @if($order->order_status == 'Pending') {{ 'selected' }} @endif>Pending</option>
+                                                                            <option value="Approved" @if($order->order_status == 'Approved') {{ 'selected' }} @endif>Approved</option>
+                                                                            <option value="Delivered" @if($order->order_status == 'Delivered') {{ 'selected' }} @endif>Delivered</option>
                                                                         </select>
                                                                         <div class="invalid-feedback">Select Order Status
                                                                         </div>
