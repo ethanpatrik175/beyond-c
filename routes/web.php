@@ -23,6 +23,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductMetaController;
 use App\Http\Controllers\RelatedProductController;
+use App\Http\Controllers\PackageTypeController;
+use App\Http\Controllers\TravelPackageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -163,11 +165,16 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
      Route::resource('contact-us', ContactController::class);
      Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
      Route::post('/reomve-message', [ContactController::class, 'removeMessage'])->name('remove.message');
-
-
-    //  Route::post('/brand/updates-status-process', [BrandController::class, 'updateStatus'])->name('brand.update.status');
-    //  Route::get('brand/trash', [BrandController::class, 'trash'])->name('brand.trash');
-    //  Route::post('/brand/restore', [BrandController::class, 'restore'])->name('brand.restore');
+     //PackageType
+     Route::resource('package-types', PackageTypeController::class);
+     Route::post('/package-type/updates-status-process', [PackageTypeController::class, 'updateStatus'])->name('package-type.update.status');
+     Route::get('package-type/trash', [PackageTypeController::class, 'trash'])->name('package-type.trash');
+     Route::post('/package-type/restore', [PackageTypeController::class, 'restore'])->name('package-type.restore');
+    //TaravelPackage
+     Route::resource('travel-packages', TravelPackageController::class);
+     Route::post('/travel-package/updates-status-process', [TravelPackageController::class, 'updateStatus'])->name('travel-package.update.status');
+     Route::get('travel-package/trash', [TravelPackageController::class, 'trash'])->name('travel-package.trash');
+     Route::post('/travel-package/restore', [TravelPackageController::class, 'restore'])->name('travel-package.restore');
 });
 /**End Admin Routes */
 

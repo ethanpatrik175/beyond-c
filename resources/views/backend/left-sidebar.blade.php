@@ -109,6 +109,18 @@
                             <span>Contact/Query</span>
                         </a>
                     </li>
+                    <li class="@if (Route::is('package-types.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('package-types.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Package Type</span>
+                        </a>
+                    </li>
+                    <li class="@if (Route::is('travel-packages.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('travel-packages.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Travel Packages</span>
+                        </a>
+                    </li>
                 @else
                 @endif
             </ul>

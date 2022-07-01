@@ -168,8 +168,7 @@ class DatingController extends Controller
 
     public function removeImage(Request $request)
     {
-        dd($request->all());
-
+        dd($request->get());
         $filename =  $request->get('filepond');
         $path = asset('assets/frontend/images/users/'.Auth::user()->id.'/'.$filename);
         dd($path, file_exists($path), $request->all());

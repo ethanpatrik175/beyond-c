@@ -6,7 +6,10 @@ use App\Models\Donation;
 use App\Models\Event;
 use App\Models\post;
 use App\Models\Product;
+use App\Models\TravelPackage;
 use App\Models\Comment;
+use App\Models\TravelTags;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\ProductCategory;
 use App\Models\RelatedProduct;
@@ -201,13 +204,19 @@ class FrontendController extends Controller
     {
         $data['pageTitle'] = "Travel Packages";
         $data['bannerTitle'] = "Travel Packages";
+        $data['travel_package'] = TravelPackage::with('travel_type')->latest()->paginate(4);
+        // dd($data['travel_package']);
         return view('frontend.travel-packages', $data);
     }
 
     public function travelPackageDetail($slug)
     {
+        // dd($slug);
         $data['pageTitle'] = "Travel Package Detail";
         $data['bannerTitle'] = "Travel Package Detail";
+        $data['travel_package'] = TravelPackage::with('travel_type' ,'tags')->where('slug', $slug)->first();
+        $data['traveltag'] = TravelTags::where('travel_package_id' , $data['travel_package']->id)->pluck('tag_id');
+        $data['tags'] = Tag::whereIn('id', $data['traveltag'])->get();
         return view('frontend.travel-package-detail', $data);
     }
    public function addtocart()

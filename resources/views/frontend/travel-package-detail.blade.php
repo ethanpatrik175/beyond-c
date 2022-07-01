@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-lg-center">
                         <div class="section-heading">
-                            <h1 class="text-white">Solo Package</h1>
+                            <h1 class="text-white">{{$travel_package->travel_type->name}}</h1>
                         </div>
                     </div>
                 </div>
@@ -21,22 +21,22 @@
                         <div class="owl-carousel travel-carousel owl-theme">
                             <div class="item">
                                 <div class="img-div">
-                                    <img src="{{ asset('assets/frontend/images/beyond-10.jpg') }}">
+                                    <img src="{{ asset('assets/frontend/images/travelpackages/' . $travel_package->image) }}">
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="img-div">
-                                    <img src="{{ asset('assets/frontend/images/beyond-14.jpg') }}">
+                                    <img src="{{ asset('assets/frontend/images/travelpackages/' . $travel_package->image) }}">
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="img-div">
-                                    <img src="{{ asset('assets/frontend/images/beyond-22.jpg') }}">
+                                    <img src="{{ asset('assets/frontend/images/travelpackages/' . $travel_package->image) }}">
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="img-div">
-                                    <img src="{{ asset('assets/frontend/images/beyond-17.jpg') }}">
+                                    <img src="{{ asset('assets/frontend/images/travelpackages/' . $travel_package->image) }}">
                                 </div>
                             </div>
                         </div>
@@ -44,25 +44,29 @@
                     <div class="col-lg-5">
                         <div class="package-details">
                             <div class="package-location">
-                                <h4 class="mb-3">Tour to London</h4>
-                                <p><i class="fa-solid fa-location-dot"></i>York</p>
+                                <h4 class="mb-3">Tour to {{$travel_package->location}}</h4>
+                                <p><i class="fa-solid fa-location-dot"></i>{{$travel_package->location}}</p>
                             </div>
                             <div class="package-duration d-lg-flex">
-                                <p> <i class="fa-solid fa-clock"></i> 10 days</p>
-                                <p><i class="fa-solid fa-users"></i> From 1 to 22 people</p>
+                                <p> <i class="fa-solid fa-clock"></i> {{$travel_package->no_of_days}} days</p>
+                                <p><i class="fa-solid fa-users"></i> {{$travel_package->no_of_members}} people</p>
                             </div>
                             <div class="package-requirements mt-2">
                                 <h6>Requirements</h6>
-                                <ul class="mt-4">
-                                    <li>Passport</li>
-                                    <li>COVID-19 Vaccination card</li>
-                                    <li>Face mask</li>
-                                </ul>
+                                <?php
+                                // dd($travel_package->requirements)
+                                ?>
+                                <div class="mt-4" style="color: white">
+                                    {!!$travel_package->requirements!!}
+                                </div>
                             </div>
                             <div class="package-events d-flex mt-4">
-                                <p>Sightseeing</p>
-                                <p>Multi Day Tour</p>
-                                <p>Road Trip</p>
+                                @forelse ($tags as $tags )
+                                <p>{{$tags->title}}</p>
+                                @empty
+                                 <p>Not found</p> 
+                                @endforelse
+                               
                             </div>
                         </div>
                     </div>

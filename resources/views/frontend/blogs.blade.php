@@ -60,8 +60,8 @@
                     @endforelse
 
                     <div class="col-sm-12 text-center mt-4">
-                        {{-- {!! $events->links() !!} --}}
-                        {!! $blogs->links('pagination::bootstrap-4') !!}
+                      
+                        {!! $blogs->links() !!}
                     </div>
                 </div>
             </div>
