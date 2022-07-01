@@ -25,7 +25,13 @@ class DatingMiddleware
             {
                 return redirect()->route('dating.create.account');
             }
-            return $next($request);
+            elseif(!$dating->subscription_id)
+            {
+                return redirect()->route('dating.subscribe');
+            }
+            else{
+                return $next($request);
+            }
         }
     }
 }

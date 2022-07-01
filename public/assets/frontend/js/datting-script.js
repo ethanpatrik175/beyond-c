@@ -10,28 +10,25 @@ $(document).ready(function () {
             },
             success: function (response) {
                 $('.form-div').LoadingOverlay("hide", true);
-
+                console.log(response);
                 if (response.type == "error") {
                     $('ul.listErrors').html('<li>' + response.message + '</li>');
-                } else {
-                    // $("#filepond-script").remove();
-                    
-                    // unloadScript('../assets/frontend/js/filepond-script.js', 'js');
-                    // loadScript('../assets/frontend/js/filepond-script.js', 'js');
-
+                }
+                else if(response.type == "done"){
+                    $('.form-div').html(response.html);
+                    $('ul.listErrors').html('<li style="font-size: 20px;font-weight: 500;padding: 4px;text-align: justify;">' + response.message + '</li>');                    
+                    setTimeout(() => {
+                        window.location.href=route('find.your.date');
+                    }, 3000);
+                }
+                else {
                     $('.form-div').html(response);
-
-                    // let r = (Math.random() + 1).toString(36).substring(2);
-                    // $(document).find('input[name="filepond"]').attr('id', r);
                     $.getScript("../assets/frontend/js/filepond-script.js");
-                    
                 }
             },
             error: function (response) {
-
                 $('.form-div').LoadingOverlay("hide", true);
                 $('ul.listErrors').html('');
-
                 if (response.responseJSON) {
                     $.each(response.responseJSON.errors, function (key, val) {
                         $('ul.listErrors').append('<li>' + val + '</li>');
@@ -55,26 +52,14 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     $('.form-div').LoadingOverlay("hide", true);
-
-
-
                     if (response.type == "error") {
                         $('ul.listErrors').html('<li>' + response.message + '</li>');
                     } else {
-                        // $("#filepond-script").remove();
-                        // $.getScript("../assets/frontend/js/filepond-script.js");
-                        // unloadScript('../assets/frontend/js/filepond-script.js', 'js');
-                        // loadScript('../assets/frontend/js/filepond-script.js', 'js');
-                        
                         $('.form-div').html(response);
-                        // let r = (Math.random() + 1).toString(36).substring(2);
-                        // $(document).find('input[name="filepond"]').attr('id', r);
-                        $.getScript("../assets/frontend/js/filepond-script.js");
-                        
+                        $.getScript("../assets/frontend/js/filepond-script.js");                        
                     }
                 },
                 error: function (response) {
-
                     $('.form-div').LoadingOverlay("hide", true);
                     $('ul.listErrors').html('');
                     $.each(response.responseJSON.errors, function (key, val) {
@@ -88,20 +73,6 @@ $(document).ready(function () {
     $(document).on('click', '.skip', function () {
         $('.dating-form').trigger('submit');
     });
-
-    function countCharacters(element, counter) {
-        $('#' + element).keyup(function () {
-            var left = 250 - $(this).val().length;
-            if (left < 0) {
-                left = 0;
-            }
-            $('.' + counter).text('Characters left: ' + left);
-        });
-    }
-
-    countCharacters('passion', 'passion-counter');
-    countCharacters('about', 'about-counter');
-
     /*let stepStatus = $('input#step-status').val();
     if (stepStatus !== "") {
         $.ajax({

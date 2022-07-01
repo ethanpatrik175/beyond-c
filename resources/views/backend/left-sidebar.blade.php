@@ -19,6 +19,12 @@
                 </li>
 
                 @if (auth()->user()->role == 'admin')
+                    <li class="@if (Route::is('subscriptions.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('subscriptions.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Subscriptions</span>
+                        </a>
+                    </li>
                     <li class="@if (Route::is('speakers.*')) {{ 'mm-active' }} @endif">
                         <a href="{{ route('speakers.index') }}" class="waves-effect">
                             <i class="bx bx-menu"></i>
@@ -97,7 +103,7 @@
                             <span>Brands</span>
                         </a>
                     </li>
-                     <li class="@if (Route::is('orders.*')) {{ 'mm-active' }} @endif">
+                    <li class="@if (Route::is('orders.*')) {{ 'mm-active' }} @endif">
                         <a href="{{ route('orders.index') }}" class="waves-effect">
                             <i class="bx bx-menu"></i>
                             <span>Order</span>

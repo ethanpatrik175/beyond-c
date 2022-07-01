@@ -5,15 +5,14 @@ FilePond.registerPlugin(
     FilePondPluginImageCrop,
     FilePondPluginImageResize,
     FilePondPluginImageTransform,
-    FilePondPluginImageEdit
 );
 
-// let r = (Math.random() + 1).toString(36).substring(10);
-// var input = $('input[name="filepond"]').attr('id');
+/*let r = (Math.random() + 1).toString(36).substring(10);
+var input = $('input[name="filepond"]').attr('id');
+console.log(input);
+*/
+
 var fp = document.querySelector('input[id="avatar"]');
-
-// console.log(input);
-
 var pond = FilePond.create(fp, {
     imageResizeTargetWidth: 200,
     imageResizeTargetHeight: 200,
@@ -24,13 +23,31 @@ var pond = FilePond.create(fp, {
     imageCropAspectRatio: '1:1',
 });
 
+if($('#userAvatar').data('add-file') !== ''){
+    pond.addFile($('#userAvatar').data('add-file'));
+}
+
 FilePond.setOptions({
+    allowRevert: false,
     server: {
         process: route('dating.upload.image.process'),
-        revert: route('dating.upload.remove.image.process'),
+        // revert: route('dating.remove.image.process'),
         headers: {
             "X-CSRF-TOKEN": $(document).find('#csrf-token').attr('content'),
         }
     }
 });
+
+function countCharacters(element, counter) {
+    $('#' + element).keyup(function () {
+        var left = 250 - $(this).val().length;
+        if (left < 0) {
+            left = 0;
+        }
+        $('.' + counter).text('Characters left: ' + left);
+    });
+}
+
+countCharacters('passion', 'passion-counter');
+countCharacters('about', 'about-counter');
 /** End profile image scripts */

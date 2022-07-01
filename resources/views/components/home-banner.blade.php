@@ -9,7 +9,7 @@
                         has been the industry's standard dummy text ever since the 1500s</p>
                 </div>
                 <div class="links mt-4">
-                    <button><a href="{{ route('find.your.date') }}" onclick="popUpDisplay()">Find Your Date</a></button>
+                    <button><a href="{{ route('find.your.date') }}">Find Your Date</a></button>
                     <button><a href="{{ route('front.view.events') }}">Book Event Ticket</a></button>
                 </div>
                 <div class="count-up d-flex justify-content-center @auth {{ 'justify-content-md-center' }} @else {{ 'justify-content-md-start' }} @endauth mt-4">
