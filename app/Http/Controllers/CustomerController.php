@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventTicket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class CustomerController extends Controller
@@ -30,7 +31,7 @@ class CustomerController extends Controller
         $paymentInfo->currency = 'USD';
         $paymentInfo->description = $event->title;
 
-        $ticket->user_id = $request->user_id;
+        $ticket->user_id = Auth::user()->id;
         $ticket->event_id = $request->id;
         $ticket->price = $eventPrice;
         $ticket->total_price = $eventPrice;

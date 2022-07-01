@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dating;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use stdClass;
 
 class DatingController extends Controller
@@ -18,6 +20,11 @@ class DatingController extends Controller
 
     public function createAccount()
     {
+        $dating = Dating::where('user_id', Auth::user()->id)->first();
+        if($dating)
+        {
+            return redirect()->route('find.your.date');
+        }
         return view('frontend.dating.create-account');
     }
 
@@ -63,6 +70,8 @@ class DatingController extends Controller
 
         $stepTwo = new stdClass;
         $stepTwo->date_of_birth = $request->date_of_birth;
+        $stepTwo->body_type = $request->body_type;
+        $stepTwo->relationship_status = $request->relationship_status;
 
         $request->session()->put('datingStepTwo', $stepTwo);
         $request->session()->put('stepStatus', 'frontend.dating.step-three');
@@ -77,6 +86,7 @@ class DatingController extends Controller
         $stepthree->want_kids = $request->want_kids;
         $stepthree->education = $request->education;
         $stepthree->do_smoke = $request->do_smoke;
+        $stepthree->do_drink = $request->do_drink;
 
         $request->session()->put('datingStepThree', $stepthree);
         $request->session()->put('stepStatus', 'frontend.dating.step-four');
@@ -100,6 +110,55 @@ class DatingController extends Controller
         $request->session()->put('stepStatus', 'frontend.dating.final-step');
 
         return view('frontend.dating.final-step');
+    }
+
+    public function finalStepProcess(Request $request)
+    {
+        $step1 = $request->session()->get('datingStepOne');
+        $step2 = $request->session()->get('datingStepTwo');
+        $step3 = $request->session()->get('datingStepThree');
+        $step4 = $request->session()->get('datingStepFour');
+        $avatar = $request->session()->get('avatar');
+
+        $dating = new Dating();
+        $dating->user_id = Auth::user()->id;
+        $dating->age_start = $step1->age_start;
+        $dating->age_end = $step1->age_end;
+        $dating->gender = $step1->gender;
+        $dating->zipcode = $step1->zipcode;
+        $dating->interested_gender = 'female';
+        $dating->date_of_birth = $step2->date_of_birth;
+        $dating->body_type = $step2->body_type;
+        $dating->relationship_status = $step2->relationship_status;
+        $dating->have_kids = $step3->have_kids;
+        $dating->want_kids = $step3->want_kids;
+        $dating->education = $step3->education;
+        $dating->do_smoke = $step3->do_smoke;
+        $dating->do_drink = $step3->do_drink;
+        $dating->religion = $step4->religion;
+        $dating->passion = $step4->passion;
+        $dating->about = $step4->about;
+        $dating->avatar = $avatar;
+
+        if($dating->save()){
+            Session::forget('datingStepOne');
+            Session::forget('datingStepTwo');
+            Session::forget('datingStepThree');
+            Session::forget('datingStepFour');
+            Session::forget('stepStatus');
+            Session::forget('avatar');
+            Session::save();
+
+            $data['type'] = 'done';
+            $data['message'] = 'Your dating account has been created successfully, you will redirected to the subscription page in few seconds.';
+            $data['html'] = view('frontend.dating.message')->render();
+            return $data;
+        }
+        else{
+            $data['type'] = 'error';
+            $data['message'] = 'Something went wrong, please contact to our support team or try again.';
+            return response($data);
+        }
     }
 
     public function restoreStep(Request $request)
@@ -157,8 +216,10 @@ class DatingController extends Controller
             $imageName = $image->getClientOriginalName();
             if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName))
             {
-                $data['type'] = 'error';
+                $request->session()->put('avatar', $imageName);
+                $data['type'] = 'success';
                 $data['message'] = 'Profile Image uploaded successfully';
+
                 return response()->json($data);
             }
         }
@@ -168,10 +229,9 @@ class DatingController extends Controller
 
     public function removeImage(Request $request)
     {
-        dd($request->get());
-        $filename =  $request->get('filepond');
+        $filename =  $request->session()->get('avatar');
         $path = asset('assets/frontend/images/users/'.Auth::user()->id.'/'.$filename);
-        dd($path, file_exists($path), $request->all());
+        dd($filename, $path, file_exists($path));
         if (file_exists($path)) {
             unlink($path);
             return response()->json(['message'=>'Image has been removed successfully!']);
@@ -179,5 +239,14 @@ class DatingController extends Controller
         else{
             return response()->json(['message'=>'Error Occured!']);
         }
+    }
+
+    // Subscription Process
+    public function subscribe()
+    {
+        $data['pageTitle'] = "Subscribe Package";
+        $data['bannerTitle'] = "Subscribe Package";
+        $data['packages'] = Subscription::get();
+        return view('frontend.dating.subscribe', $data);
     }
 }

@@ -16,6 +16,7 @@ class CreateDatingsTable extends Migration
         Schema::create('datings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('subcription_id')->nullable();
             $table->integer('age_start')->default(0);
             $table->integer('age_end')->default(0);
             $table->string('gender')->nullable();
@@ -33,6 +34,8 @@ class CreateDatingsTable extends Migration
             $table->string('date_of_birth')->nullable();
             $table->string('zipcode')->nullable();
             $table->string('about')->nullable();
+            $table->longText('subscription_details')->nullable();
+            $table->string('subscription_ends_at')->nullable();
             $table->string('status')->default('active');
             $table->timestamps();
             $table->softDeletes();

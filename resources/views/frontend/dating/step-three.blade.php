@@ -72,6 +72,22 @@
             </div>
         </div>
 
+        <div class="col-lg-12 mt-3">
+            <div class="form-group text-start">
+                <label for="do_drink" class="black-text mb-1">Do You Drink?</label>
+                <select name="do_drink" id="do_drink" class="form-select">
+                    <option value="" selected>Do You Drink?</option>
+                    <option value="no">No</option>
+                    <option value="Yes Occasionally">Yes, Occasionally</option>
+                    <option value="Yes Daily">Yes, Daily</option>
+                    <option value="Yes trying to quit">Yes, trying to quit</option>
+                </select>
+                <div class="invalid-feedback">
+                    Do you Drink?
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="mt-4">
         <button type="submit" class="red-button">Next </button>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSubscriptionHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_comments', function (Blueprint $table) {
+        Schema::create('subscription_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();//added by belongs to user with user_id
-            $table->unsignedBigInteger('parent_id')->nullable();//added by belongs to user with user_id
-            $table->unsignedBigInteger('post_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->longText('comment')->nullable();
-            $table->string('status')->default('Un-Approved');
-            $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('dating_id')->nullable();//added by belongs to user with user_id
+            $table->unsignedBigInteger('subscription_id')->nullable();//deleted by belongs to user with user_id
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('subscription_histories');
     }
-};
+}
