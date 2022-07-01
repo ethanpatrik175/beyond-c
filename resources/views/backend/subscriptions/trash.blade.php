@@ -60,7 +60,7 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Image</th>
+                                        {{-- <th>Image</th> --}}
                                         <th>Name</th>
                                         <th>Charges</th>
                                         <th>Deleted At</th>
@@ -91,9 +91,6 @@
                 columns: [{
                     data: 'id',
                     name: 'id'
-                }, {
-                    data: 'image',
-                    name: 'image'
                 }, {
                     data: 'name',
                     name: 'name'

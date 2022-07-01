@@ -60,9 +60,9 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Image</th>
                                         <th>Name</th>
                                         <th>Charges</th>
+                                        <th>Description</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
                                         <th>Status(is active?)</th>
@@ -94,14 +94,14 @@
                     data: 'id',
                     name: 'id'
                 }, {
-                    data: 'image',
-                    name: 'image'
-                }, {
                     data: 'name',
                     name: 'name'
                 }, {
                     data: 'charges',
                     name: 'charges'
+                }, {
+                    data: 'description',
+                    name: 'description'
                 }, {
                     data: 'created_at',
                     name: 'created_at'

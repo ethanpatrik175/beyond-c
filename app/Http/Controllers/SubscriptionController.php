@@ -55,7 +55,7 @@ class SubscriptionController extends Controller
                         return $btn1;
                     }
                 })
-                ->addColumn('image', function ($row) {
+                /*->addColumn('image', function ($row) {
                     $imageName = Str::of($row->icon)->replace(' ', '%20');
                     if (isset($row->icon)) {
                         $image = '<img src=' . asset('assets/frontend/images/subscriptions/' . $imageName) . ' class="avatar-sm" />';
@@ -63,9 +63,9 @@ class SubscriptionController extends Controller
                         $image = '<img src=' . asset('assets/backend/images/no-image.jpg') . ' class="avatar-sm" />';
                     }
                     return $image;
-                })
+                })*/
                 ->addColumn('description', function ($row) {
-                    return Str::of($row->short_description)->limit(100);
+                    return json_decode($row->description);
                 })
                 ->addColumn('charges', function ($row) {
                     $charges = '';
@@ -75,7 +75,7 @@ class SubscriptionController extends Controller
                     $charges .= '<br />Discouned Price' . number_format($row->discount_per_year, 2);
                     return $charges;
                 })
-                ->rawColumns(['action', 'created_at', 'updated_at', 'status', 'image', 'description', 'charges'])
+                ->rawColumns(['action', 'created_at', 'updated_at', 'status', 'description', 'charges'])
                 ->make(true);
         }
 
@@ -112,7 +112,7 @@ class SubscriptionController extends Controller
             "name" => "required|max:20",
             "price_per_month" => "required",
             "price_per_year" => "required",
-            "description" => "nullable|max:500"
+            'charge_type' => 'required|in:monthly,yearly'
         ]);
 
         $obj = new Subscription();
@@ -123,9 +123,10 @@ class SubscriptionController extends Controller
         $obj->discount_per_month = $request->discount_per_month;
         $obj->price_per_year = $request->price_per_year;
         $obj->discount_per_year = $request->discount_per_year;
+        $obj->charge_type = $request->charge_type;
         $obj->description = json_encode($request->description);
 
-        if ($request->hasFile('image')) {
+        /*if ($request->hasFile('image')) {
             $request->validate([
                 'image' => 'image|max:1024'
             ]);
@@ -134,7 +135,7 @@ class SubscriptionController extends Controller
             if ($image->move('assets/frontend/images/subscriptions/', $image->getClientOriginalName())) {
                 $obj->icon = $image->getClientOriginalName();
             }
-        }
+        }*/
 
         if ($obj->save()) {
             $data['type'] = "success";
@@ -193,7 +194,6 @@ class SubscriptionController extends Controller
             "name" => "required|max:20",
             "price_per_month" => "required",
             "price_per_year" => "required",
-            "description" => "nullable|max:500"
         ]);
 
         $obj->name = $request->name;
@@ -205,7 +205,7 @@ class SubscriptionController extends Controller
         $obj->discount_per_year = $request->discount_per_year;
         $obj->description = json_encode($request->description);
 
-        if ($request->hasFile('image')) {
+        /*if ($request->hasFile('image')) {
             $request->validate([
                 'image' => 'image|max:1024'
             ]);
@@ -214,7 +214,7 @@ class SubscriptionController extends Controller
             if ($image->move('assets/frontend/images/subscriptions/', $image->getClientOriginalName())) {
                 $obj->icon = $image->getClientOriginalName();
             }
-        }
+        }*/
 
         if ($obj->save()) {
             $data['type'] = "success";
@@ -296,7 +296,7 @@ class SubscriptionController extends Controller
                 ->addColumn('deleted_at', function ($row) {
                     return date('d-M-Y h:i A', strtotime($row->deleted_at)) . '<br /> <label class="text-primary">By: ' . $row->deletedBy->first_name . ' ' . $row->deletedBy->last_name . '</label>';
                 })
-                ->addColumn('image', function ($row) {
+                /*->addColumn('image', function ($row) {
                     $imageName = Str::of($row->icon)->replace(' ', '%20');
                     if (isset($row->icon)) {
                         $image = '<img src=' . asset('assets/frontend/images/subscriptions/' . $imageName) . ' class="avatar-sm" />';
@@ -304,7 +304,7 @@ class SubscriptionController extends Controller
                         $image = '<img src=' . asset('assets/backend/images/no-image.jpg') . ' class="avatar-sm" />';
                     }
                     return $image;
-                })
+                })*/
                 ->addColumn('charges', function ($row) {
                     $charges = '';
                     $charges .= 'Price/Month' . number_format($row->price_per_month, 2);
@@ -313,7 +313,7 @@ class SubscriptionController extends Controller
                     $charges .= '<br />Discouned Price' . number_format($row->discount_per_year, 2);
                     return $charges;
                 })
-                ->rawColumns(['action', 'deleted_at', 'image', 'charges'])
+                ->rawColumns(['action', 'deleted_at', 'charges'])
                 ->make(true);
         }
 

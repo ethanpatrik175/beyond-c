@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dating;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -245,6 +246,7 @@ class DatingController extends Controller
     {
         $data['pageTitle'] = "Subscribe Package";
         $data['bannerTitle'] = "Subscribe Package";
+        $data['packages'] = Subscription::get();
         return view('frontend.dating.subscribe', $data);
     }
 }

@@ -56,7 +56,7 @@
                     enctype="multipart/form-data" novalidate>
                     <div class="row">
                         @csrf
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -123,6 +123,19 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="mb-3">
+                                                <label for="discount_per_year" class="control-label">Charge Type</label>
+                                                <select name="charge_type" id="charge_type" class="form-select select2" required>
+                                                    <option value="">Select Charge Type</option>
+                                                    <option value="monthly">Monthly</option>
+                                                    <option value="yearly">Yearly</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    please select specific type
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
                                                 <textarea rows="4" class="form-control" name="description" id="description" placeholder="Description here">{{ old('description') }}</textarea>
                                                 <div class="invalid-feedback">
@@ -135,7 +148,7 @@
                             </div>
                             <!-- end card -->
                         </div> <!-- end col -->
-                        <div class="col-sm-3">
+                        {{-- <div class="col-sm-3">
                             <div class="card mt-1">
                                 <div class="card-body">
                                     <div class="row">
@@ -161,7 +174,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-sm-12 mb-5">
                             <button type="submit" class="btn btn-primary">ADD SUBSCRIPTION</button>
                         </div>

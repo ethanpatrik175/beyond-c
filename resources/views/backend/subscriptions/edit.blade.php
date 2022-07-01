@@ -57,7 +57,7 @@
                     <div class="row">
                         @method('PUT')
                         @csrf
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -133,7 +133,7 @@
                                         <div class="col-sm-12">
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
-                                                <textarea rows="4" class="form-control" name="description" id="description" placeholder="Description here">{!! ($subs->description) ? json_decode($subs->description) : '' !!}</textarea>
+                                                <textarea rows="4" class="form-control" name="description" id="description" placeholder="Description here">{!! old('description', json_decode($subs->description)) !!}</textarea>
                                                 <div class="invalid-feedback">
                                                     Please enter valid description.
                                                 </div>
@@ -144,7 +144,7 @@
                             </div>
                             <!-- end card -->
                         </div> <!-- end col -->
-                        <div class="col-sm-3">
+                        {{-- <div class="col-sm-3">
                             <div class="card mt-1">
                                 <div class="card-body">
                                     <div class="row">
@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-sm-12 mb-5">
                             <button type="submit" class="btn btn-primary">UPDATE SUBSCRIPTION</button>
                         </div>
