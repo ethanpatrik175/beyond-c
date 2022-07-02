@@ -53,7 +53,8 @@
                         @endif
                     </div>
 
-                    <form method="POST" action="{{ route('contact-us.store') }}" class="needs-validation" novalidate>
+                    {{-- <form method="POST" action="{{ route('contact-us.store') }}" class="needs-validation" novalidate> --}}
+                    <form method="POST" action="{{ route('store') }}" class="needs-validation" novalidate>
                         @csrf
                         <div class="row mt-md-5 mt-2">
                             <div class="col-lg-6">

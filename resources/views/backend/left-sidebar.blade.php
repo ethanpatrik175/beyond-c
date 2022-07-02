@@ -127,6 +127,12 @@
                             <span>Travel Packages</span>
                         </a>
                     </li>
+                    <li class="@if (Route::is('event-tickets.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('event-tickets.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Event Ticket</span>
+                        </a>
+                    </li>
                 @else
                 @endif
             </ul>

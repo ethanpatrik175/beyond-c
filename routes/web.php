@@ -21,6 +21,7 @@ use App\Http\Controllers\VenueController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\EventTiicketController;
 use App\Http\Controllers\ProductMetaController;
 use App\Http\Controllers\RelatedProductController;
 use App\Http\Controllers\PackageTypeController;
@@ -177,6 +178,10 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     Route::post('/travel-package/updates-status-process', [TravelPackageController::class, 'updateStatus'])->name('travel-package.update.status');
     Route::get('travel-package/trash', [TravelPackageController::class, 'trash'])->name('travel-package.trash');
     Route::post('/travel-package/restore', [TravelPackageController::class, 'restore'])->name('travel-package.restore');
+    Route::resource('travel-packages', TravelPackageController::class);
+    Route::post('/travel-package/updates-status-process', [TravelPackageController::class, 'updateStatus'])->name('travel-package.update.status');
+    Route::get('travel-package/trash', [TravelPackageController::class, 'trash'])->name('travel-package.trash');
+    Route::post('/travel-package/restore', [TravelPackageController::class, 'restore'])->name('travel-package.restore');
 
     Route::resource('contact-us', ContactController::class);
     Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
@@ -188,6 +193,8 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     Route::post('/subscription/restore', [SubscriptionController::class, 'restore'])->name('subscriptions.restore');
     Route::post('/subscription/updates-status-process', [SubscriptionController::class, 'updateStatus'])->name('subscriptions.update.status');
 
+    //Event Ticket
+    Route::resource('event-tickets', EventTiicketController::class);
     //  Route::post('/brand/updates-status-process', [BrandController::class, 'updateStatus'])->name('brand.update.status');
     //  Route::get('brand/trash', [BrandController::class, 'trash'])->name('brand.trash');
     //  Route::post('/brand/restore', [BrandController::class, 'restore'])->name('brand.restore');
@@ -226,7 +233,7 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
 //Dating Routes End
 
 
-
+Route::post('/contactus', [ContactController::class, 'store'])->name('store');
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank.you');
 Route::post('/comment-store', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/create-slug', [GlobalController::class, 'createSlug'])->name('create.slug');
