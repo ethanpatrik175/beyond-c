@@ -72,7 +72,7 @@ class FrontendController extends Controller
         $data['bannerTitle'] = "Charity Donation";
         return view('frontend.charity-donation', $data);
     }
-    
+
     public function processCharityDonation(Request $request)
     {
         $request->validate([
@@ -87,7 +87,7 @@ class FrontendController extends Controller
         ]);
 
         $donation = new Donation();
-        $donationNumber = 'DONS'.date('dmYhis', time()).''.($request->donation_amount == "custom") ? $request->custom_amount : $request->donation_amount;
+        $donationNumber = 'DONS' . date('dmYhis', time()) . '' . ($request->donation_amount == "custom") ? $request->custom_amount : $request->donation_amount;
         $donation->donation_number = $donationNumber;
         $donation->donation_amount =  ($request->donation_amount == "custom") ? $request->custom_amount : $request->donation_amount;
         $donation->recurrence = $request->recurrence ?? '';
@@ -102,9 +102,8 @@ class FrontendController extends Controller
         $donation->payment_method = $request->payment_method ?? '';
         $donation->check_details = $request->check_details;
         $donation->payment_details = ($request->payment_details) ? json_encode($request->payment_details) : '';
-        
-        if($donation->save())
-        {
+
+        if ($donation->save()) {
             $data['type'] = "success";
             $data['message'] = "Donation transaction has been completed successfully!";
 
@@ -116,7 +115,7 @@ class FrontendController extends Controller
                 $body = 'New Donation has been recieved with Donation Number#' . $donationNumber;
                 $details = [
                     'subject' => 'New Donation has been recieved with Donation Number#' . $donationNumber,
-                    'greeting' => 'Hi ' . $user->first_name .' '. $user->last_name . ',',
+                    'greeting' => 'Hi ' . $user->first_name . ' ' . $user->last_name . ',',
                     'donation' => $donation,
                     'body' => $body,
                     'action_title' => '',
@@ -130,10 +129,9 @@ class FrontendController extends Controller
                 $data['message'] = "Donation transaction has been completed successfully!.";
 
                 return redirect()->route('thank.you')->with($data);
-
             } catch (Exception $e) {
                 Log::info($e->getMessage());
-                
+
                 $data['thankyou'] = true;
                 $data['type'] = "info";
                 $data['message'] = "Donation transaction has been completed successfully, Failed to Send emails.";
@@ -143,21 +141,18 @@ class FrontendController extends Controller
 
             // return json_encode($data);
 
-        }
-        else
-        {
+        } else {
             $data['type'] = "danger";
             $data['message'] = "Failed to make donation transaction.";
 
             return redirect()->route('thank.you')->with($data);
             // return json_encode($data);
         }
-
     }
 
     public function checkout()
     {
-           $data['cart'] = \Cart::GetContent();
+        $data['cart'] = \Cart::GetContent();
         $data['product_total'] = \Cart::GetContent()->count();
         $data['total'] = \Cart::getTotal();
         $data['pageTitle'] = "Checkout";
@@ -176,16 +171,15 @@ class FrontendController extends Controller
     {
         $data['pageTitle'] = "Product Promotion";
         $data['bannerTitle'] = "Product Promotion";
-    
+
         $data['product_category'] = ProductCategory::whereIsActive(1)->whereNull('deleted_at')->get();
-        
-        if($request->category){
-            $data['products'] = Product::where('category_id' , $request->category)->whereIsActive(1)->whereNull('deleted_at')->paginate(12);    
-        }
-        else{
+
+        if ($request->category) {
+            $data['products'] = Product::where('category_id', $request->category)->whereIsActive(1)->whereNull('deleted_at')->paginate(12);
+        } else {
             $data['products'] = Product::whereIsActive(1)->whereNull('deleted_at')->paginate(12);
         }
-        
+
         return view('frontend.product-promotion', $data);
     }
 
@@ -193,10 +187,10 @@ class FrontendController extends Controller
     {
         $data['pageTitle'] = "Product Detail";
         $data['bannerTitle'] = "Product Detail";
-        $data['singleproduct'] = Product::where('id',$id)->get();
+        $data['singleproduct'] = Product::where('id', $id)->get();
 
-        $product_ids = RelatedProduct::where('product_id' , $id)->get()->pluck('related_product_id');
-       $data['related_product'] = Product::whereIn('id' , $product_ids)->get();
+        $product_ids = RelatedProduct::where('product_id', $id)->get()->pluck('related_product_id');
+        $data['related_product'] = Product::whereIn('id', $product_ids)->get();
         return view('frontend.product-detail', $data);
     }
 
@@ -214,25 +208,24 @@ class FrontendController extends Controller
         // dd($slug);
         $data['pageTitle'] = "Travel Package Detail";
         $data['bannerTitle'] = "Travel Package Detail";
-        $data['travel_package'] = TravelPackage::with('travel_type' ,'tags')->where('slug', $slug)->first();
-        $data['traveltag'] = TravelTags::where('travel_package_id' , $data['travel_package']->id)->pluck('tag_id');
+        $data['travel_package'] = TravelPackage::with('travel_type', 'tags')->where('slug', $slug)->first();
+        $data['traveltag'] = TravelTags::where('travel_package_id', $data['travel_package']->id)->pluck('tag_id');
         $data['tags'] = Tag::whereIn('id', $data['traveltag'])->get();
         return view('frontend.travel-package-detail', $data);
     }
-   public function addtocart()
+    public function addtocart()
     {
         $data['pageTitle'] = "Cart";
         $data['bannerTitle'] = "Cart";
         return view('frontend.add-to-cart', $data);
     }
-   
+
     public function thankYou()
     {
         $data['pageTitle'] = "Thank You";
         $data['bannerTitle'] = "Thank You";
 
-        if(!Session::has('type'))
-        {
+        if (!Session::has('type')) {
             return redirect()->route('front.home');
         }
         return view('frontend.thank-you', $data);

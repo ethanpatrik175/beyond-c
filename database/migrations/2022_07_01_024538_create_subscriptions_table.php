@@ -26,7 +26,7 @@ class CreateSubscriptionsTable extends Migration
             $table->decimal('discount_per_month', 12, 2)->default(0)->nullable();
             $table->decimal('price_per_year', 12, 2)->default(0)->nullable();
             $table->decimal('discount_per_year', 12, 2)->default(0)->nullable();
-            $table->enum('charge_type', ['monthly', 'yearly'])->default('monthly');
+            $table->enum('charge_type', ['monthly', 'yearly', 'free'])->default('monthly');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

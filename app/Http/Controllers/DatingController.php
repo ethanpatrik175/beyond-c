@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Dating;
 use App\Models\Subscription;
+use App\Models\SubscriptionHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -13,16 +15,16 @@ class DatingController extends Controller
 {
     public function findYourDate()
     {
-        $dating = Dating::where('user_id', Auth::user()->id)->first();
-
-        dd($dating);
+        $data['pageTitle'] = "Find Your Date";
+        $data['bannerTitle'] = "Find Your Date";
+        $data['dating'] = Dating::where('user_id', Auth::user()->id)->first();
+        return view('frontend.dating.find-your-date', $data);
     }
 
     public function createAccount()
     {
         $dating = Dating::where('user_id', Auth::user()->id)->first();
-        if($dating)
-        {
+        if ($dating) {
             return redirect()->route('find.your.date');
         }
         return view('frontend.dating.create-account');
@@ -61,8 +63,7 @@ class DatingController extends Controller
         ]);
 
         $dob = \Carbon\Carbon::parse($request->date_of_birth)->age;
-        if($dob < 18)
-        {
+        if ($dob < 18) {
             $data['type'] = "error";
             $data['message'] = "You must be at least 18 to use our site.";
             return response($data);
@@ -140,7 +141,7 @@ class DatingController extends Controller
         $dating->about = $step4->about;
         $dating->avatar = $avatar;
 
-        if($dating->save()){
+        if ($dating->save()) {
             Session::forget('datingStepOne');
             Session::forget('datingStepTwo');
             Session::forget('datingStepThree');
@@ -153,8 +154,7 @@ class DatingController extends Controller
             $data['message'] = 'Your dating account has been created successfully, you will redirected to the subscription page in few seconds.';
             $data['html'] = view('frontend.dating.message')->render();
             return $data;
-        }
-        else{
+        } else {
             $data['type'] = 'error';
             $data['message'] = 'Something went wrong, please contact to our support team or try again.';
             return response($data);
@@ -163,12 +163,10 @@ class DatingController extends Controller
 
     public function restoreStep(Request $request)
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $view = $request->session()->get('stepStatus');
             return view($view);
-        }
-        else{
+        } else {
             $data['type'] = "error";
             $data['message'] = "";
             return response($data);
@@ -177,27 +175,17 @@ class DatingController extends Controller
 
     public function stepBack(Request $request)
     {
-        if(Auth::check())
-        {   
-            if($request->backStep == "step-four")
-            {
+        if (Auth::check()) {
+            if ($request->backStep == "step-four") {
                 return view('frontend.dating.step-four');
-            }
-            elseif($request->backStep == "step-three")
-            {
+            } elseif ($request->backStep == "step-three") {
                 return view('frontend.dating.step-three');
-            }
-            elseif($request->backStep == "step-two")
-            {
+            } elseif ($request->backStep == "step-two") {
                 return view('frontend.dating.step-two');
-            }
-            else if($request->backStep == "step-one")
-            {
+            } else if ($request->backStep == "step-one") {
                 return view('frontend.dating.step-one');
             }
-            
-        }
-        else{
+        } else {
             $data['type'] = "error";
             $data['message'] = "";
             return response($data);
@@ -210,12 +198,10 @@ class DatingController extends Controller
             'filepond' => 'required|image|max:1024'
         ]);
 
-        if($request->hasFile('filepond'))
-        {
+        if ($request->hasFile('filepond')) {
             $image = $request->file('filepond');
             $imageName = $image->getClientOriginalName();
-            if($image->move('assets/frontend/images/users/'.Auth::user()->id,$imageName))
-            {
+            if ($image->move('assets/frontend/images/users/' . Auth::user()->id, $imageName)) {
                 $request->session()->put('avatar', $imageName);
                 $data['type'] = 'success';
                 $data['message'] = 'Profile Image uploaded successfully';
@@ -224,20 +210,19 @@ class DatingController extends Controller
             }
         }
 
-        return response()->json(['error'=>'Failed to upload image, please try again.']);
+        return response()->json(['error' => 'Failed to upload image, please try again.']);
     }
 
     public function removeImage(Request $request)
     {
         $filename =  $request->session()->get('avatar');
-        $path = asset('assets/frontend/images/users/'.Auth::user()->id.'/'.$filename);
+        $path = asset('assets/frontend/images/users/' . Auth::user()->id . '/' . $filename);
         dd($filename, $path, file_exists($path));
         if (file_exists($path)) {
             unlink($path);
-            return response()->json(['message'=>'Image has been removed successfully!']);
-        }
-        else{
-            return response()->json(['message'=>'Error Occured!']);
+            return response()->json(['message' => 'Image has been removed successfully!']);
+        } else {
+            return response()->json(['message' => 'Error Occured!']);
         }
     }
 
@@ -247,6 +232,51 @@ class DatingController extends Controller
         $data['pageTitle'] = "Subscribe Package";
         $data['bannerTitle'] = "Subscribe Package";
         $data['packages'] = Subscription::get();
+        $data['dating'] = Dating::select('subscription_id')->where('user_id', Auth::user()->id)->first();
         return view('frontend.dating.subscribe', $data);
+    }
+
+    public function subscribeProcess(Request $request)
+    {
+        $subscription = Subscription::findOrFail($request->id);
+        $dating       = Dating::where('user_id', Auth::user()->id)->first();
+
+        if($subscription->charge_type == 'free'){
+            $dating->subscription_ends_at = Carbon::today()->addDays(7)->format('Y-m-d h:i A');
+        }
+        else if($subscription->charge_type == 'monthly'){
+            $dating->subscription_ends_at = Carbon::today()->addMonth()->format('Y-m-d h:i A');
+        }
+        else if($subscription->charge_type == 'yearly'){
+            $dating->subscription_ends_at = Carbon::today()->addYear()->format('Y-m-d h:i A');
+        }
+
+        $paymentDetails = array();
+        $details = new StdClass;
+        $details->payment_details = $paymentDetails;
+
+        $dating->subscription_id = $subscription->id;
+        $dating->subscription_details = json_encode($details);
+
+        if($dating->save()){
+
+            $sh = new SubscriptionHistory();
+            $sh->user_id = Auth::user()->id;
+            $sh->dating_id = $dating->id;
+            $sh->subscription_id = $subscription->id;
+            $sh->metadata = json_encode(array('description' => 'New Subscription has been completed'));
+            $sh->save();
+
+            $data['type'] = 'success';
+            $data['message'] = 'Your have subscribed the dating package successfully!.';
+            return redirect()->route('find.your.date')->with($data);
+        }
+        else{
+            $data['type'] = 'danger';
+            $data['message'] = 'Something went wrong, please try again.';
+
+            return redirect()->route('dating.subscribe')->with($data);
+        }
+
     }
 }

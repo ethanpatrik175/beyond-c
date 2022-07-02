@@ -164,20 +164,20 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     Route::post('updated', [OrderController::class, 'update'])->name('order.updated');
     Route::get('order-history/{id}', [OrderController::class, 'orderHistory'])->name('order.history');
     //Contact us
-     Route::resource('contact-us', ContactController::class);
-     Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
-     Route::post('/reomve-message', [ContactController::class, 'removeMessage'])->name('remove.message');
-     //PackageType
-     Route::resource('package-types', PackageTypeController::class);
-     Route::post('/package-type/updates-status-process', [PackageTypeController::class, 'updateStatus'])->name('package-type.update.status');
-     Route::get('package-type/trash', [PackageTypeController::class, 'trash'])->name('package-type.trash');
-     Route::post('/package-type/restore', [PackageTypeController::class, 'restore'])->name('package-type.restore');
+    Route::resource('contact-us', ContactController::class);
+    Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
+    Route::post('/reomve-message', [ContactController::class, 'removeMessage'])->name('remove.message');
+    //PackageType
+    Route::resource('package-types', PackageTypeController::class);
+    Route::post('/package-type/updates-status-process', [PackageTypeController::class, 'updateStatus'])->name('package-type.update.status');
+    Route::get('package-type/trash', [PackageTypeController::class, 'trash'])->name('package-type.trash');
+    Route::post('/package-type/restore', [PackageTypeController::class, 'restore'])->name('package-type.restore');
     //TaravelPackage
-     Route::resource('travel-packages', TravelPackageController::class);
-     Route::post('/travel-package/updates-status-process', [TravelPackageController::class, 'updateStatus'])->name('travel-package.update.status');
-     Route::get('travel-package/trash', [TravelPackageController::class, 'trash'])->name('travel-package.trash');
-     Route::post('/travel-package/restore', [TravelPackageController::class, 'restore'])->name('travel-package.restore');
-     
+    Route::resource('travel-packages', TravelPackageController::class);
+    Route::post('/travel-package/updates-status-process', [TravelPackageController::class, 'updateStatus'])->name('travel-package.update.status');
+    Route::get('travel-package/trash', [TravelPackageController::class, 'trash'])->name('travel-package.trash');
+    Route::post('/travel-package/restore', [TravelPackageController::class, 'restore'])->name('travel-package.restore');
+
     Route::resource('contact-us', ContactController::class);
     Route::get('/contact-read-message', [ContactController::class, 'readMessage'])->name('contact.read.message');
     Route::post('/reomve-message', [ContactController::class, 'removeMessage'])->name('remove.message');
@@ -220,6 +220,7 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
     Route::post('/dating/step-back', [DatingController::class, 'stepBack'])->name('step.back');
 
     Route::get('/subscribe', [DatingController::class, 'subscribe'])->name('subscribe');
+    Route::post('/subscribe-process', [DatingController::class, 'subscribeProcess'])->name('subscribe.process');
 });
 
 //Dating Routes End

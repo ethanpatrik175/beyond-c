@@ -128,6 +128,7 @@
                                                     <option value="">Select Charge Type</option>
                                                     <option value="monthly">Monthly</option>
                                                     <option value="yearly">Yearly</option>
+                                                    <option value="free">Free</option>
                                                 </select>
                                                 <div class="invalid-feedback">
                                                     please select specific type

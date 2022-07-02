@@ -18,6 +18,7 @@ class CreateSubscriptionHistoriesTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();//added by belongs to user with user_id
             $table->unsignedBigInteger('dating_id')->nullable();//added by belongs to user with user_id
             $table->unsignedBigInteger('subscription_id')->nullable();//deleted by belongs to user with user_id
+            $table->longText('metadata')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
