@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Sponsor::class);
     }
+
+    public function dating()
+    {
+        return $this->hasOne(Dating::class);
+    }
 }

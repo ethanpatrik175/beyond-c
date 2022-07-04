@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dating;
 use App\Models\Subscription;
 use App\Models\SubscriptionHistory;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,16 @@ class DatingController extends Controller
     {
         $data['pageTitle'] = "Find Your Date";
         $data['bannerTitle'] = "Find Your Date";
-        $data['dating'] = Dating::where('user_id', Auth::user()->id)->first();
+        $currentUserDating = Dating::where('user_id', Auth::user()->id)->first();
+
+        $data['listUsers'] = User::has('dating')
+                            ->with(['dating' => function($q) use($currentUserDating){
+                                $q->where('gender', '<>', $currentUserDating->gender)->where('status', 'active'); 
+                            }])
+                            ->whereStatus('active')
+                            ->where('id', '<>', $currentUserDating->user_id)
+                            ->get();
+
         return view('frontend.dating.find-your-date', $data);
     }
 
@@ -120,6 +130,12 @@ class DatingController extends Controller
         $step3 = $request->session()->get('datingStepThree');
         $step4 = $request->session()->get('datingStepFour');
         $avatar = $request->session()->get('avatar');
+
+        if(!$avatar) {
+            $data['type'] = "error";
+            $data['message'] = "Please upload your profile avatar";
+            return response($data);
+        }
 
         $dating = new Dating();
         $dating->user_id = Auth::user()->id;
