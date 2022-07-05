@@ -45,7 +45,7 @@
         <section class="events-archive pb-3 pt-5 pt-lg-0">
             <div class="container">
 
-                <div class="row pt-5 justify-content-center">
+                <div class="row pt-5">
                     @if (Session::has('message'))
                         <div class="col-sm-12 mb-4">
                             <div class="alert alert-{{ Session::get('type') }} alert-dismissible fade show" role="alert">
@@ -109,9 +109,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="col-lg-12 mb-4 text-center">
-                                <h5><a href="javascript:void(0);">No Records Found!</a></h5>
-                            </div>
+                            
                         @endif
                     @empty
                         <div class="col-lg-12 mb-4 text-center">
