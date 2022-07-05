@@ -18,15 +18,16 @@ class DatingController extends Controller
     {
         $data['pageTitle'] = "Find Your Date";
         $data['bannerTitle'] = "Find Your Date";
-        $currentUserDating = Dating::where('user_id', Auth::user()->id)->first();
+        $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
 
         $data['listUsers'] = User::has('dating')
-                            ->with(['dating' => function($q) use($currentUserDating){
-                                $q->where('gender', '<>', $currentUserDating->gender)->where('status', 'active'); 
-                            }])
-                            ->whereStatus('active')
-                            ->where('id', '<>', $currentUserDating->user_id)
-                            ->get();
+            ->with(['dating' => function ($q) use ($currentUserDating) {
+                $q->where('gender', '<>', $currentUserDating->dating->gender)->where('status', 'active');
+            }])
+            ->whereStatus('active')
+            ->where('id', '<>', $currentUserDating->id)
+            ->get();
+        $data['currentUserDating'] = $currentUserDating;
 
         return view('frontend.dating.find-your-date', $data);
     }
@@ -131,7 +132,7 @@ class DatingController extends Controller
         $step4 = $request->session()->get('datingStepFour');
         $avatar = $request->session()->get('avatar');
 
-        if(!$avatar) {
+        if (!$avatar) {
             $data['type'] = "error";
             $data['message'] = "Please upload your profile avatar";
             return response($data);
@@ -257,13 +258,11 @@ class DatingController extends Controller
         $subscription = Subscription::findOrFail($request->id);
         $dating       = Dating::where('user_id', Auth::user()->id)->first();
 
-        if($subscription->charge_type == 'free'){
+        if ($subscription->charge_type == 'free') {
             $dating->subscription_ends_at = Carbon::today()->addDays(7)->format('Y-m-d h:i A');
-        }
-        else if($subscription->charge_type == 'monthly'){
+        } else if ($subscription->charge_type == 'monthly') {
             $dating->subscription_ends_at = Carbon::today()->addMonth()->format('Y-m-d h:i A');
-        }
-        else if($subscription->charge_type == 'yearly'){
+        } else if ($subscription->charge_type == 'yearly') {
             $dating->subscription_ends_at = Carbon::today()->addYear()->format('Y-m-d h:i A');
         }
 
@@ -274,7 +273,7 @@ class DatingController extends Controller
         $dating->subscription_id = $subscription->id;
         $dating->subscription_details = json_encode($details);
 
-        if($dating->save()){
+        if ($dating->save()) {
 
             $sh = new SubscriptionHistory();
             $sh->user_id = Auth::user()->id;
@@ -286,13 +285,36 @@ class DatingController extends Controller
             $data['type'] = 'success';
             $data['message'] = 'Your have subscribed the dating package successfully!.';
             return redirect()->route('find.your.date')->with($data);
-        }
-        else{
+        } else {
             $data['type'] = 'danger';
             $data['message'] = 'Something went wrong, please try again.';
 
             return redirect()->route('dating.subscribe')->with($data);
         }
+    }
 
+    public function sendRequest(Request $request)
+    {
+        $request->validate([
+            'action' => 'required|in:makefriend,unfriend',
+        ]);
+
+        dd($request->all());
+
+        $recipient = User::has('dating')->with('dating')->findOrFail($request->id);
+        $user = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
+        
+        if($request->action == "makefriend")
+        {
+            $user->befriend($recipient);
+            $data['type'] = 'success';
+            $data['message'] = 'Friend request has been sent successfully.';
+        }
+        else
+        {
+            $data['type'] = 'erorr';
+            $data['message'] = 'Something went wrong, please try again.';
+        }   
+        return response($data);
     }
 }
