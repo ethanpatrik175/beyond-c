@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     @empty
-                        
+                        <h1>Travel Package Not Found</h1>
                     @endforelse
                    
                 </div>

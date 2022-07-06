@@ -133,6 +133,24 @@
                             <span>Event Ticket</span>
                         </a>
                     </li>
+                    <li class="@if (Route::is('page.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('page.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Pages</span>
+                        </a>
+                    </li>
+                    <li class="@if (Route::is('sections.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('sections.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Section</span>
+                        </a>
+                    </li>
+                    <li class="@if (Route::is('sectioncontents.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('sectioncontents.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Section Content</span>
+                        </a>
+                    </li>
                 @else
                 @endif
             </ul>

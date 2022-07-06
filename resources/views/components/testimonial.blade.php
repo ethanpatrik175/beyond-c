@@ -3,11 +3,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-heading text-width text-lg-center">
-                    <h5>testimonial</h5>
-                    <h1 class="text-white">What Our Users Say About Our Platform</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit explicabo laborum hic!
-                        Perferendis earum illum deserunt accusamus voluptates asperiores nesciunt quaerat. Ipsa
-                        aut explicabo odit, cum officia eligendi </p>
+                    <?php
+                    // dd($title);
+                    ?>
+                    <h5>{{$title->sectioncontent[0]->content}}</h5>
+                    <h1 class="text-white">{{$title->sectioncontent[1]->content}}</h1>
+                    <p>{{$title->sectioncontent[2]->content}} </p>
                 </div>
             </div>
         </div>

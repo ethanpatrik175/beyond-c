@@ -12,8 +12,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading text-width text-lg-center">
-                            <h1 class="text-white">We Are Always Here For You!</h1>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit explicabo laborum hic! </p>
+                            <h1 class="text-white">{{$section_1->sectioncontent[0]->content}}</h1>
+                            <p>{{$section_1->sectioncontent[1]->content}} </p>
                         </div>
                     </div>
                 </div>

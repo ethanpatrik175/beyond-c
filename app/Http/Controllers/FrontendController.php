@@ -13,8 +13,10 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\ProductCategory;
 use App\Models\RelatedProduct;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
@@ -22,11 +24,38 @@ class FrontendController extends Controller
 {
     public function welcome()
     {
-        return view('welcome');
+       
+        $data['content'] = Cache::rememberForever('content', function () {
+            return Section::with('sectioncontent')->where('name','section_1')->where('page_id',1)->first();
+        });
+        $data['section_2'] = Cache::rememberForever('section_2', function () {
+            return Section::with('sectioncontent')->where('name','section_2')->where('page_id',1)->first();
+        });
+        $data['section_3'] = Cache::rememberForever('section_3', function () {
+            return Section::with('sectioncontent')->where('name','section_3')->where('page_id',1)->first();
+        });
+        $data['section_4'] = Cache::rememberForever('section_4', function () {
+            return Section::with('sectioncontent')->where('name','section_4')->where('page_id',1)->first();
+        });
+        // $data['testimonal_1'] = "test";
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
+            return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
+        });
+        $data['heading_2'] = Cache::rememberForever('heading_2', function () {
+            return Section::with('sectioncontent')->where('page_id',1)->where('name','section_5')->first();
+        });
+
+        // dd($data['heading_2']);
+        return view('welcome',$data);
     }
+
 
     public function aboutUs()
     {
+        $seconds= 10;
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
+            return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
+        });
         $data['pageTitle'] = "About Us";
         $data['bannerTitle'] = "About Us";
         return view('frontend.about-us', $data);
@@ -34,6 +63,10 @@ class FrontendController extends Controller
 
     public function blogs()
     {
+        $seconds= 10;
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
+            return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
+        });
         $data['pageTitle'] = "Latest Blogs";
         $data['bannerTitle'] = "Latest Blogs";
         $data['blogs'] = post::with(['user', 'category'])->whereIsActive(1)->whereNull('deleted_at')->paginate(12);
@@ -162,6 +195,10 @@ class FrontendController extends Controller
 
     public function contact()
     {
+       
+        $data['section_1'] = Cache::rememberForever('section_1', function () {
+            return Section::with('sectioncontent')->where('name','section_1')->where('page_id',4)->first();
+        });
         $data['pageTitle'] = "Contact Us";
         $data['bannerTitle'] = "Contact Us";
         return view('frontend.contact', $data);
@@ -230,4 +267,10 @@ class FrontendController extends Controller
         }
         return view('frontend.thank-you', $data);
     }
+    // public function testimomal()
+    // {
+    //   
+    //    dd($data['content']);
+    //     return view('frontend.thank-you', $data);
+    // }
 }

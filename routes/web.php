@@ -25,6 +25,9 @@ use App\Http\Controllers\EventTiicketController;
 use App\Http\Controllers\ProductMetaController;
 use App\Http\Controllers\RelatedProductController;
 use App\Http\Controllers\PackageTypeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\SectionContentController;
+use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Auth;
@@ -70,6 +73,7 @@ Route::name('front.')->group(function () {
     Route::post('update-cart', [CartController::class, 'updateCart'])->name('cart.update');
     Route::post('/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
     Route::post('clear', [CartController::class, 'clearAllCart'])->name('cart.clear');
+    // Route::get('testimonal', [FrontendController::class, 'testimomal']);
 });
 
 Auth::routes();
@@ -193,6 +197,23 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     Route::post('/subscription/restore', [SubscriptionController::class, 'restore'])->name('subscriptions.restore');
     Route::post('/subscription/updates-status-process', [SubscriptionController::class, 'updateStatus'])->name('subscriptions.update.status');
 
+     // Pages
+     Route::resource('page', PageController::class);
+     Route::post('/pages/updates-status-process', [PageController::class, 'updateStatus'])->name('page.update.status');
+     Route::get('/pages/trash', [PageController::class, 'trash'])->name('pages.trash');
+     Route::post('/pages/restore', [PageController::class, 'restoreService'])->name('page.restore');
+
+     //Section
+    Route::resource('sections', SectionController::class);
+    Route::post('/section/updates-status-process', [SectionController::class, 'updateStatus'])->name('section.update.status');
+    Route::get('/section/trash', [SectionController::class, 'trash'])->name('section.trash');
+    Route::post('/section/restore', [SectionController::class, 'restoreService'])->name('section.restore');
+    //SectionContent
+    Route::resource('sectioncontents', SectionContentController::class);
+    Route::post('/sectioncontent/updates-status-process', [SectionContentController::class, 'updateStatus'])->name('sectioncontent.update.status');
+    Route::get('/sectioncontent/trash', [SectionContentController::class, 'trash'])->name('sectioncontent.trash');
+    Route::post('/sectioncontent/restore', [SectionContentController::class, 'restoreService'])->name('sectioncontent.restore');
+ 
     //Event Ticket
     Route::resource('event-tickets', EventTiicketController::class);
     //  Route::post('/brand/updates-status-process', [BrandController::class, 'updateStatus'])->name('brand.update.status');

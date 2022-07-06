@@ -66,7 +66,7 @@
                 </div>
             </div>
         </section>
-        <x-testimonial />
+        <x-testimonial :title="$testimonal_1" />
         <x-footer />
     </div>
 @endsection
