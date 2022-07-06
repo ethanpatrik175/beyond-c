@@ -21,6 +21,11 @@
                     <img src="{{ asset('assets/frontend/images/email-outline-badged.svg') }}" class="d-none d-md-block ml-3" alt="">
                     <img src="{{ asset('assets/frontend/images/ic-1.svg') }}" alt="" class="d-none d-md-block">
                     <img src="{{ asset('assets/frontend/images/notif-1.svg') }}" alt="" class="d-none d-md-block">
+                    @if(isset(Auth::user()->dating->avatar))
+                        <img src="{{ asset('assets/frontend/images/users/'.Auth::user()->id.'/'.Auth::user()->dating->avatar) }}" alt="" class="d-none d-md-block rounded-circle" width="40" height="40">
+                    @else
+                        <img src="{{ asset('assets/backend/images/users/user.png') }}" alt="" class="d-none d-md-block rounded-circle" width="40" height="40" />
+                    @endif
                 @endauth
                     <div class="mob-menu d-flex d-md-none"> <button> <i class="fa-solid fa-bars"></i> </button> </div>
                 </div>

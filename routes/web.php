@@ -249,6 +249,8 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
 
     Route::get('/subscribe', [DatingController::class, 'subscribe'])->name('subscribe');
     Route::post('/subscribe-process', [DatingController::class, 'subscribeProcess'])->name('subscribe.process');
+
+    Route::post('/send-request', [DatingController::class, 'sendRequest'])->name('send.request');
 });
 
 //Dating Routes End
