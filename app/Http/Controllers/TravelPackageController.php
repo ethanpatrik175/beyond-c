@@ -284,7 +284,7 @@ class TravelPackageController extends Controller
             if ($image->move('assets/frontend/images/travelpackages/', $image->getClientOriginalName())) {
 
                 $TravelPackage->image = $image->getClientOriginalName();
-                if ($product->save()) {
+                if ($TravelPackage->save()) {
                     $data['type'] = "success";
                     $data['message'] = "Travel Package Updated Successfuly!.";
                     $data['icon'] = 'mdi-check-all';
