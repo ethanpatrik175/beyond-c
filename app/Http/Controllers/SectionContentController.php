@@ -7,6 +7,7 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -239,6 +240,7 @@ class SectionContentController extends Controller
                 $SectionContent->content = $image->getClientOriginalName();
                 if($SectionContent->save())
                 {
+                    Cache::flush();
                     $data['type'] = "success";
                     $data['message'] = "Section Content Added Successfuly!.";
                     $data['icon'] = 'mdi-check-all';

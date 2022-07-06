@@ -24,24 +24,24 @@ class FrontendController extends Controller
 {
     public function welcome()
     {
-        $seconds = 10;
-        $data['content'] = Cache::remember('content', $seconds ,function () {
+       
+        $data['content'] = Cache::rememberForever('content', function () {
             return Section::with('sectioncontent')->where('name','section_1')->where('page_id',1)->first();
         });
-        $data['section_2'] = Cache::remember('section_2',$seconds , function () {
+        $data['section_2'] = Cache::rememberForever('section_2', function () {
             return Section::with('sectioncontent')->where('name','section_2')->where('page_id',1)->first();
         });
-        $data['section_3'] = Cache::remember('section_3',$seconds , function () {
+        $data['section_3'] = Cache::rememberForever('section_3', function () {
             return Section::with('sectioncontent')->where('name','section_3')->where('page_id',1)->first();
         });
-        $data['section_4'] = Cache::remember('section_4',$seconds , function () {
+        $data['section_4'] = Cache::rememberForever('section_4', function () {
             return Section::with('sectioncontent')->where('name','section_4')->where('page_id',1)->first();
         });
         // $data['testimonal_1'] = "test";
-        $data['testimonal_1'] = Cache::remember('testimonal_1',$seconds , function () {
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
-        $data['heading_2'] = Cache::remember('heading_2',$seconds , function () {
+        $data['heading_2'] = Cache::rememberForever('heading_2', function () {
             return Section::with('sectioncontent')->where('page_id',1)->where('name','section_5')->first();
         });
 
@@ -53,7 +53,7 @@ class FrontendController extends Controller
     public function aboutUs()
     {
         $seconds= 10;
-        $data['testimonal_1'] = Cache::remember('testimonal_1',$seconds , function () {
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
         $data['pageTitle'] = "About Us";
@@ -64,7 +64,7 @@ class FrontendController extends Controller
     public function blogs()
     {
         $seconds= 10;
-        $data['testimonal_1'] = Cache::remember('testimonal_1',$seconds , function () {
+        $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
         $data['pageTitle'] = "Latest Blogs";
@@ -195,8 +195,8 @@ class FrontendController extends Controller
 
     public function contact()
     {
-        $seconds = 10;
-        $data['section_1'] = Cache::remember('section_1', $seconds ,function () {
+       
+        $data['section_1'] = Cache::rememberForever('section_1', function () {
             return Section::with('sectioncontent')->where('name','section_1')->where('page_id',4)->first();
         });
         $data['pageTitle'] = "Contact Us";
