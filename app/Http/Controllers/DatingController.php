@@ -299,21 +299,40 @@ class DatingController extends Controller
             'action' => 'required|in:makefriend,unfriend',
         ]);
 
-        dd($request->all());
+        // dd($request->all());
 
         $recipient = User::has('dating')->with('dating')->findOrFail($request->id);
         $user = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
         
         if($request->action == "makefriend")
         {
-            $user->befriend($recipient);
-            $data['type'] = 'success';
-            $data['message'] = 'Friend request has been sent successfully.';
+            if($user->befriend($recipient))
+            {
+                $data['type'] = 'success';
+                $data['icon'] = 'fa-solid fa-user-check';
+                $data['message'] = 'Friend request has been sent successfully.';
+                $data['action'] = 'unfriend';
+            }
+            else{
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
+            
         }
-        else
+        elseif($request->action == 'unfriend')
         {
-            $data['type'] = 'erorr';
-            $data['message'] = 'Something went wrong, please try again.';
+            if($user->unfriend($recipient))
+            {
+                $data['type'] = 'success';
+                $data['icon'] = 'fa-solid fa-user-plus';
+                $data['message'] = 'Friend request Cancelled Successfully!';
+                $data['action'] = 'makefriend';
+            }
+            else
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
         }   
         return response($data);
     }

@@ -7,11 +7,13 @@
 @push('styles')
     <style>
         .user-avatar {
-            width: 100px;
-            height: 100px !important;
+            width: auto;
+            height: 150px !important;
             margin: 0 auto;
             background-color: #000;
             padding: 10px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px
         }
 
         .main-container.events-page .events-archive .events-box .event-right-box {
@@ -37,7 +39,41 @@
             color: #e50000 !important;
             font-size: 20px !important;
         }
+
+        #form-submit {
+            background: none;
+            padding: 0px;
+        }
+
+        .main-container.events-page .events-archive .events-box .event-right-box {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .main-container.events-page .events-archive .events-box .event-left-box img {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        /* .alert.alert-success.alert-dismissible.fade.show {
+                position: fixed;
+                bottom: 50px;
+                left: 50%;
+                transform: translate(-50%);
+                height: 70px;
+                display: flex;
+                align-items: center;
+                z-index: 9999;
+                background: darkgreen;
+                color: white;
+                text-align: center !important;
+                padding: 0px !important;
+                max-width: 450px !important;
+                width: 100%;
+                justify-content: center;
+            } */
     </style>
+    <link rel="stylesheet" href="{{ asset('assets/backend/libs/toastr/build/toastr.min.css') }}" />
 @endpush
 
 @section('content')
@@ -45,8 +81,8 @@
         <x-banner :banner-title="$bannerTitle"></x-banner>
         <section class="events-archive pb-3 pt-5 pt-lg-0">
             <div class="container">
-                <div class="row" id="messages"></div>
-                <div class="row pt-5">
+                <div class="row pt-5" id="messages"></div>
+                <div class="row">
                     @if (Session::has('message'))
                         <div class="col-sm-12 mb-4">
                             <div class="alert alert-{{ Session::get('type') }} alert-dismissible fade show" role="alert">
@@ -76,13 +112,8 @@
                     @forelse ($listUsers as $user)
                         @if (isset($user->dating))
                             <div class="col-sm-4 mb-4">
-                                <div class="events-box d-lg-flex position-relative">
+                                <div class="events-box d-lg-flex position-relative item-{{ $user->id }}">
                                     <div class="event-left-box position-relative">
-                                        {{-- <div class="event-date">
-                                            <p class="m-0 text-white">
-                                                {{ date('d-M-Y h:i A', strtotime($user->created_at)) }}
-                                            </p>
-                                        </div> --}}
                                         @if (isset($user->dating->avatar))
                                             <a href="javascript:void(0);">
                                                 <img src="{{ asset('assets/frontend/images/users/' . $user->id . '/' . Str::of($user->dating->avatar)->replace(' ', '%20')) }}"
@@ -104,25 +135,36 @@
                                                 {{ Str::of($user->dating->gender)->ucfirst() ?? '' }}</p>
                                             <p class="mb-0 detail">Relationship:
                                                 {{ Str::of($user->dating->relationship_status)->ucfirst() ?? '' }}</p>
+                                                <p class="mb-0 detail">Height:
+                                                    {{ Str::of($user->dating->relationship_status)->ucfirst() ?? '' }}</p>
+                                                    <p class="mb-0 detail">DOB: {{ $user->dating->date_of_birth }}</p>
                                         </div>
                                     </div>
                                     <div class="event-comments">
                                         <a href="javascript:void(0);"><i class="fa-solid fa-message"></i></a>
                                     </div>
                                     <div class="event-share">
-                                        <a href="javascript:void(0);"
-                                            onclick="event.preventDefault(); $(document).find('form#request-form-{{$user->id}}').submit();">
-                                            @if($currentUserDating->hasSentFriendRequestTo($user))
-                                                <i class="fa-solid fa-user-check"></i>
-                                            @else
-                                                <i class="fa-solid fa-user-plus"></i>
-                                            @endif
-                                        </a>
-                                        <form id="request-form-{{$user->id}}" data-form="{{$user->id}}" action="{{ route('dating.send.request') }}"
-                                            method="POST" class="d-none">
+                                        <form class="request-form" data-item="{{ $user->id }}"
+                                            action="{{ route('dating.send.request') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $user->id }}" />
-                                            <input type="hidden" name="action" value="makefriend" />
+
+                                            @if ($currentUserDating->hasSentFriendRequestTo($user))
+                                                <input type="hidden" name="action" id="action{{ $user->id }}"
+                                                    value="unfriend" />
+                                            @else
+                                                <input type="hidden" name="action" id="action{{ $user->id }}"
+                                                    value="makefriend" />
+                                            @endif
+
+                                            <button type="submit" id="form-submit">
+                                                @if ($currentUserDating->hasSentFriendRequestTo($user))
+                                                    <i class="fa-solid fa-user-check" id="icon{{ $user->id }}"></i>
+                                                @else
+                                                    <i class="fa-solid fa-user-plus" id="icon{{ $user->id }}"></i>
+                                                @endif
+                                            </button>
+
                                         </form>
                                     </div>
                                 </div>
@@ -136,6 +178,42 @@
                     @endforelse
                 </div>
             </div>
+
+            <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+                <!-- Position it -->
+                <div style="position: absolute; top: 0; right: 0;">
+
+                    <!-- Then put toasts within -->
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img src="..." class="rounded mr-2" alt="...">
+                            <strong class="mr-auto">Bootstrap</strong>
+                            <small class="text-muted">just now</small>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            See? Just like this.
+                        </div>
+                    </div>
+
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img src="..." class="rounded mr-2" alt="...">
+                            <strong class="mr-auto">Bootstrap</strong>
+                            <small class="text-muted">2 seconds ago</small>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            Heads up, toasts will stack automatically
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
         <x-footer />
     </div>
@@ -143,5 +221,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
     </script>
+    <script src="{{ asset('/assets/backend/libs/toastr/build/toastr.min.js') }}"></script>
+    <script src="{{ asset('/assets/backend/js/pages/toastr.init.js') }}"></script>
     <script src="{{ asset('/assets/frontend/js/dating-friends-script.js') }}"></script>
 @endpush
