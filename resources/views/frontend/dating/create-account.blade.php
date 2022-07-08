@@ -41,8 +41,8 @@
         }
     </style>
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" /> --}}
-    <link href="{{ asset('/assets/frontend/css/filepond/filepond.css') }}" rel="stylesheet" />
-    <link href="{{ asset('/assets/frontend/css/filepond/filepond-plugin-image-preview.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/frontend/css/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/frontend/css/filepond/filepond-plugin-image-preview.css') }}" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -94,12 +94,12 @@
     <script src="{{ asset('assets/backend/js/pages/form-validation.init.js') }}"></script>
     <script src="{{ asset('assets/backend/libs/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/pages/form-mask.init.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond.min.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond-plugin-image-preview.min.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond-plugin-image-crop.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond-plugin-file-validate-type.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond-plugin-image-resize.js') }}"></script>
-    <script src="{{ asset('/assets/frontend/css/filepond/filepond-plugin-image-transform.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond-plugin-image-preview.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond-plugin-image-crop.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond-plugin-image-resize.js') }}"></script>
+    <script src="{{ asset('assets/frontend/css/filepond/filepond-plugin-image-transform.js') }}"></script>
     <!-- include FilePond jQuery adapter -->
     <script src="{{ asset('assets/frontend/js/datting-script.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/filepond-script.js') }}"></script>

@@ -6,9 +6,9 @@
                     <?php
                     // dd($title);
                     ?>
-                    <h5>{{$title->sectioncontent[0]->content}}</h5>
-                    <h1 class="text-white">{{$title->sectioncontent[1]->content}}</h1>
-                    <p>{{$title->sectioncontent[2]->content}} </p>
+                    <h5>{{$title->sectioncontent[0]->content ?? ''}}</h5>
+                    <h1 class="text-white">{{$title->sectioncontent[1]->content ?? ''}}</h1>
+                    <p>{{$title->sectioncontent[2]->content ?? ''}} </p>
                 </div>
             </div>
         </div>

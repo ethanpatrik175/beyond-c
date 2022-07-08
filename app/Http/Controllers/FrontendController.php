@@ -23,8 +23,7 @@ use Illuminate\Support\Facades\Log;
 class FrontendController extends Controller
 {
     public function welcome()
-    {
-       
+    {       
         $data['content'] = Cache::rememberForever('content', function () {
             return Section::with('sectioncontent')->where('name','section_1')->where('page_id',1)->first();
         });
