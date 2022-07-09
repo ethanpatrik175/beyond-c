@@ -223,7 +223,7 @@ class FrontendController extends Controller
     public function productDetail($id)
     {
         $data['pageTitle'] = "Product Detail";
-        $data['bannerTitle'] = "Product Detail";
+        $data['bannerTitle'] = Banner::where('page',"product-detail")->first();
         $data['singleproduct'] = Product::where('id', $id)->get();
 
         $product_ids = RelatedProduct::where('product_id', $id)->get()->pluck('related_product_id');

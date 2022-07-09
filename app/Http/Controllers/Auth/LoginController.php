@@ -60,7 +60,7 @@ class LoginController extends Controller
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
-
+      
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me))
         {
             if(Auth::check() AND (Auth::user()->status == 'active'))
@@ -70,6 +70,7 @@ class LoginController extends Controller
             else
             {
                 Auth::logout();
+                $data['bannerTitle'] = Banner::where('page',"home")->first();
                 $data['message'] = 'Record Not Found!, Please Try Again!';
                 return redirect()->back()->with($data);
             }
@@ -77,6 +78,7 @@ class LoginController extends Controller
         else
         {
             $data['message'] = 'Invalid Credentials, Please Try Again!';
+            $data['bannerTitle'] = Banner::where('page',"home")->first();
             return redirect()->back()->with($data);
         }
     }
@@ -115,12 +117,14 @@ class LoginController extends Controller
             else
             {
                 Auth::logout();
+                $data['bannerTitle'] = Banner::where('page',"home")->first();
                 $data['message'] = 'Record Not Found!, Please Try Again!';
                 return redirect()->back()->with($data);
             }
         }
         else
         {
+            $data['bannerTitle'] = Banner::where('page',"home")->first();
             $data['message'] = 'Invalid Credentials, Please Try Again!';
             return redirect()->back()->with($data);
         }
