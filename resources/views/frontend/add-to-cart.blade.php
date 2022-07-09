@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="main-container contact-page">
-    <x-banner :banner-title="$bannerTitle"></x-banner>
+<x-banner :banner-title="$bannerTitle"></x-banner>
 
     <section class="contact-us section-padding add-to-cart">
         <main class="my-8">

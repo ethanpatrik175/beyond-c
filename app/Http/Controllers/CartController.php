@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -15,7 +16,7 @@ class CartController extends Controller
     {
        
         $data['pageTitle'] = "Cart";
-        $data['bannerTitle'] = "Cart";
+        $data['bannerTitle'] = Banner::where('page',"cart")->first();
     
         // $items = \Cart::getContent();
         // dd($items);
@@ -43,7 +44,7 @@ class CartController extends Controller
             'associatedModel' => $product
         ));
 
-        
+        $data['bannerTitle'] = Banner::where('page',"travel-packages")->first();
         // Session()->put('cart' ,$items);
         Session()->flash('success', 'Product is Added to Cart Successfully !');
          

@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col-lg-12 text-center">
                 <div class="section-heading">
-                    <h1>{{ $bannerTitle ?? '' }}</h1>
+                    <h1>{{ json_decode($bannerTitle->headings)->one }}</h1>
                 </div>
             </div>
         </div>

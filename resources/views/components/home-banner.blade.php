@@ -3,14 +3,13 @@
         <div class="row align-items-center">
             <div class="@auth {{ 'col-lg-12' }} @else {{ 'col-lg-5 offset-lg-1' }} @endauth">
                 <div class="section-heading">
-                    <h5>Welcome To Engaging Singles</h5>
-                    <h1>Are You Waiting For <span>Dating?</span></h1>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /> Lorem Ipsum
-                        has been the industry's standard dummy text ever since the 1500s</p>
+                    <h5>{{json_decode($bannerTitle->headings)->one}}</h5>
+                    <h1>{!! json_decode($bannerTitle->headings)->two !!}</h1>
+                    <p>{{$bannerTitle->description}}</p>
                 </div>
                 <div class="links mt-4">
-                    <button><a href="{{ route('find.your.date') }}">Find Your Date</a></button>
-                    <button><a href="{{ route('front.view.events') }}">Book Event Ticket</a></button>
+                    <button><a href="{{ route('find.your.date') }}">{{json_decode($bannerTitle->buttons)->title1}}</a></button>
+                    <button><a href="{{ route('front.view.events') }}">{{json_decode($bannerTitle->buttons)->title2}}</a></button>
                 </div>
                 <div class="count-up d-flex justify-content-center @auth {{ 'justify-content-md-center' }} @else {{ 'justify-content-md-start' }} @endauth mt-4">
                     <div class="left-count text-center">

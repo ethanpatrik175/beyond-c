@@ -15,7 +15,7 @@
 @section('content')
     <div class="main-container">
         <x-mobile-view-slide />
-        <x-home-banner />
+        <x-home-banner :banner-title="$bannerTitle" />
     </div>
 @endsection
 

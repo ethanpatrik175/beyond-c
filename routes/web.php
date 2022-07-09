@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
@@ -219,6 +220,11 @@ Route::middleware(['auth', 'admin.middleware'])->prefix('/admin')->group(functio
     //  Route::post('/brand/updates-status-process', [BrandController::class, 'updateStatus'])->name('brand.update.status');
     //  Route::get('brand/trash', [BrandController::class, 'trash'])->name('brand.trash');
     //  Route::post('/brand/restore', [BrandController::class, 'restore'])->name('brand.restore');
+    //banners
+    Route::resource('banners', BannerController::class);
+    Route::post('/banners/updates-status-process', [BannerController::class, 'updateStatus'])->name('banners.update.status');
+    Route::get('/banner/trash', [BannerController::class, 'trash'])->name('banners.trash');
+    Route::post('/banner/restore', [BannerController::class, 'restoreBanner'])->name('banners.restore');
 });
 /**End Admin Routes */
 

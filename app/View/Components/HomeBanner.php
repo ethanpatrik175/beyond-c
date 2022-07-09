@@ -6,14 +6,10 @@ use Illuminate\View\Component;
 
 class HomeBanner extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $bannerTitle;
+    public function __construct($bannerTitle)
     {
-        //
+        $this->bannerTitle = $bannerTitle;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -44,7 +45,8 @@ class LoginController extends Controller
 
     public function adminLogin()
     {
-        return view('backend.admin.login');
+        $data['bannerTitle'] = Banner::where('page',"home")->first();
+        return view('backend.admin.login',$data);
     }
 
     /**

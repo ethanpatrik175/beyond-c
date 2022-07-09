@@ -151,6 +151,12 @@
                             <span>Section Content</span>
                         </a>
                     </li>
+                    <li class="@if (Route::is('banners.*')) {{ 'mm-active' }} @endif">
+                        <a href="{{ route('banners.index') }}" class="waves-effect">
+                            <i class="bx bx-menu"></i>
+                            <span>Banners</span>
+                        </a>
+                    </li>
                 @else
                 @endif
             </ul>

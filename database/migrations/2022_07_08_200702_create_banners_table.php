@@ -19,6 +19,7 @@ class CreateBannersTable extends Migration
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->string('page')->nullable();
+            $table->longText('buttons')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

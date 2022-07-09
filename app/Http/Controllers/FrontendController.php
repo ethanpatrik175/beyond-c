@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Donation;
 use App\Models\Event;
 use App\Models\post;
@@ -44,7 +45,7 @@ class FrontendController extends Controller
             return Section::with('sectioncontent')->where('page_id',1)->where('name','section_5')->first();
         });
 
-        // dd($data['heading_2']);
+        $data['bannerTitle'] = Banner::where('page',"home")->first();
         return view('welcome',$data);
     }
 
@@ -56,7 +57,7 @@ class FrontendController extends Controller
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
         $data['pageTitle'] = "About Us";
-        $data['bannerTitle'] = "About Us";
+        $data['bannerTitle'] = Banner::where('page',"about-us")->first();
         return view('frontend.about-us', $data);
     }
 
@@ -67,7 +68,7 @@ class FrontendController extends Controller
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
         $data['pageTitle'] = "Latest Blogs";
-        $data['bannerTitle'] = "Latest Blogs";
+        $data['bannerTitle'] = Banner::where('page',"blogs")->first();
         $data['blogs'] = post::with(['user', 'category'])->whereIsActive(1)->whereNull('deleted_at')->paginate(12);
         return view('frontend.blogs', $data);
     }
@@ -78,14 +79,14 @@ class FrontendController extends Controller
         $data['comment'] = Comment::where('post_id', $data['post']->id)->where('status', "Approved")->get();
         // dd($data['comment']);
         $data['pageTitle'] = "Blog Detail";
-        $data['bannerTitle'] = "Blog Detail";
+        $data['bannerTitle'] = Banner::where('page',"blog-detail")->first();
         return view('frontend.blog-detail', $data);
     }
 
     public function viewEvents()
     {
         $data['pageTitle'] = "Latest Events";
-        $data['bannerTitle'] = "Latest Events";
+        $data['bannerTitle'] = Banner::where('page',"events")->first();
         $data['events'] = Event::where('is_active', 1)->whereNull('deleted_at')->with('addedBy')->orderBy('id', 'desc')->paginate(6);
         return view('frontend.events', $data);
     }
@@ -101,7 +102,7 @@ class FrontendController extends Controller
     public function charityDonation()
     {
         $data['pageTitle'] = "Charity Donation";
-        $data['bannerTitle'] = "Charity Donation";
+        $data['bannerTitle'] = Banner::where('page',"charity-donation")->first();
         return view('frontend.charity-donation', $data);
     }
 
@@ -188,7 +189,7 @@ class FrontendController extends Controller
         $data['product_total'] = \Cart::GetContent()->count();
         $data['total'] = \Cart::getTotal();
         $data['pageTitle'] = "Checkout";
-        $data['bannerTitle'] = "Checkout";
+        $data['bannerTitle'] = Banner::where('page',"checkout")->first();
         return view('frontend.checkout', $data);
     }
 
@@ -199,14 +200,14 @@ class FrontendController extends Controller
             return Section::with('sectioncontent')->where('name','section_1')->where('page_id',4)->first();
         });
         $data['pageTitle'] = "Contact Us";
-        $data['bannerTitle'] = "Contact Us";
+        $data['bannerTitle'] = Banner::where('page',"contact-us")->first();
         return view('frontend.contact', $data);
     }
 
     public function productPromotion(Request $request)
     {
         $data['pageTitle'] = "Product Promotion";
-        $data['bannerTitle'] = "Product Promotion";
+        $data['bannerTitle'] = Banner::where('page',"product-promotion")->first();
 
         $data['product_category'] = ProductCategory::whereIsActive(1)->whereNull('deleted_at')->get();
 
@@ -233,7 +234,7 @@ class FrontendController extends Controller
     public function travelPackages()
     {
         $data['pageTitle'] = "Travel Packages";
-        $data['bannerTitle'] = "Travel Packages";
+        $data['bannerTitle'] = Banner::where('page',"travel-packages")->first();
         $data['travel_package'] = TravelPackage::with('travel_type')->latest()->paginate(4);
         // dd($data['travel_package']);
         return view('frontend.travel-packages', $data);
@@ -243,7 +244,7 @@ class FrontendController extends Controller
     {
         // dd($slug);
         $data['pageTitle'] = "Travel Package Detail";
-        $data['bannerTitle'] = "Travel Package Detail";
+        $data['bannerTitle'] = Banner::where('page',"travel-package-detail")->first();
         $data['travel_package'] = TravelPackage::with('travel_type', 'tags')->where('slug', $slug)->first();
         $data['traveltag'] = TravelTags::where('travel_package_id', $data['travel_package']->id)->pluck('tag_id');
         $data['tags'] = Tag::whereIn('id', $data['traveltag'])->get();
@@ -251,8 +252,10 @@ class FrontendController extends Controller
     }
     public function addtocart()
     {
+        dd("test");
         $data['pageTitle'] = "Cart";
-        $data['bannerTitle'] = "Cart";
+        $data['bannerTitle'] = "cart";
+       
         return view('frontend.add-to-cart', $data);
     }
 
