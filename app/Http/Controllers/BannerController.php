@@ -303,7 +303,7 @@ class BannerController extends Controller
     public function destroy($id)
     {
         $banner = Banner::find($id);
-        if ($banner->status == 'inactive') {
+        if ($banner->is_active == 1) {
             $banner->delete();
             $notification['type'] = "success";
             $notification['message'] = "Banner Moved to Trash Successfuly!.";
