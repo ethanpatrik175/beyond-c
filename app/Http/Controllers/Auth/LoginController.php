@@ -54,6 +54,11 @@ class LoginController extends Controller
         return view('backend.admin.login');
     }
 
+    public function login_banner(){
+        $data['bannerTitle'] = Banner::where('page',"home")->first();
+        return view('auth.login',$data);
+    }
+
     /**
      * This loginPRocess belongs to admin login
      */
@@ -96,7 +101,7 @@ class LoginController extends Controller
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
-
+        $data['bannerTitle'] = Banner::where('page',"home")->first();
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me))
         {
             if(Auth::check() AND (Auth::user()->status == 'active'))

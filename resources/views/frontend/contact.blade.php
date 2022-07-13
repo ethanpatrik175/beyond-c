@@ -12,8 +12,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading text-width text-lg-center">
-                            <h1 class="text-white">{{$section_1->sectioncontent[0]->content}}</h1>
-                            <p>{{$section_1->sectioncontent[1]->content}} </p>
+                            <h1 class="text-white">{{(isset($section_1)) ? $section_1->sectioncontent[0]->content : ''}}</h1>
+                            <p>{{ (isset($section_1)) ? $section_1->sectioncontent[1]->content : ''}} </p>
                         </div>
                     </div>
                 </div>

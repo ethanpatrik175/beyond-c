@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="mb-3">
-                                                <label for="btn_title" class="form-label">Button Title</label>
+                                                <label for="btn_title" class="form-label">Button Title One</label>
                                                 <input type="text" class="form-control" name="buttons[title1]" id="btn_title"
                                                     placeholder="Button Title here" value="{{ json_decode($banner->buttons)->title1 }}" >
                                                 <div class="invalid-feedback">
@@ -116,7 +116,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="mb-3">
-                                                <label for="btn_title" class="form-label">Button Title</label>
+                                                <label for="btn_title" class="form-label">Button Title Two</label>
                                                 <input type="text" class="form-control" name="buttons[title2]" id="btn_title"
                                                     placeholder="Button Title here" value="{{ json_decode($banner->buttons)->title2 }}" >
                                                 <div class="invalid-feedback">
@@ -126,7 +126,7 @@
                                         </div>
                                         <div class="col-sm-9">
                                             <div class="mb-3">
-                                                <label for="btn_link" class="form-label">Button Link</label>
+                                                <label for="btn_link" class="form-label">Button Link One</label>
                                                 <input type="text" class="form-control" name="buttons[link1]" id="btn_link"
                                                     placeholder="Button Link here" value="{{ json_decode($banner->buttons)->link1 }}" >
                                                 <div class="invalid-feedback">
@@ -136,7 +136,7 @@
                                         </div>
                                         <div class="col-sm-9">
                                             <div class="mb-3">
-                                                <label for="btn_link" class="form-label">Button Link</label>
+                                                <label for="btn_link" class="form-label">Button Link Two</label>
                                                 <input type="text" class="form-control" name="buttons[link1]" id="btn_link"
                                                     placeholder="Button Link here" value="{{ json_decode($banner->buttons)->link2 }}" >
                                                 <div class="invalid-feedback">
