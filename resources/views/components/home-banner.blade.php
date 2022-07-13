@@ -3,13 +3,13 @@
         <div class="row align-items-center">
             <div class="@auth {{ 'col-lg-12' }} @else {{ 'col-lg-5 offset-lg-1' }} @endauth">
                 <div class="section-heading">
-                    <h5>{{json_decode($bannerTitle->headings)->one}}</h5>
-                    <h1>{!! json_decode($bannerTitle->headings)->two !!}</h1>
-                    <p>{{$bannerTitle->description}}</p>
+                    <h5>{{ (isset($bannerTitle)) ? json_decode($bannerTitle->headings)->one : '' }}</h5>
+                    <h1>{!! (isset($bannerTitle)) ? json_decode($bannerTitle->headings)->two  : '' !!}</h1>
+                    <p>{{ (isset($bannerTitle)) ? $bannerTitle->description : '' }}</p>
                 </div>
                 <div class="links mt-4">
-                    <button><a href="{{ route('find.your.date') }}">{{json_decode($bannerTitle->buttons)->title1}}</a></button>
-                    <button><a href="{{ route('front.view.events') }}">{{json_decode($bannerTitle->buttons)->title2}}</a></button>
+                    <button><a href="{{ route('find.your.date') }}">{{(isset($bannerTitle)) ? json_decode($bannerTitle->buttons)->title1 : ''}}</a></button>
+                    <button><a href="{{ route('front.view.events') }}">{{(isset($bannerTitle)) ? json_decode($bannerTitle->buttons)->title2 : ''}}</a></button>
                 </div>
                 <div class="count-up d-flex justify-content-center @auth {{ 'justify-content-md-center' }} @else {{ 'justify-content-md-start' }} @endauth mt-4">
                     <div class="left-count text-center">

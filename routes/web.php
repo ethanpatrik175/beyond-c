@@ -74,7 +74,8 @@ Route::name('front.')->group(function () {
     Route::post('update-cart', [CartController::class, 'updateCart'])->name('cart.update');
     Route::post('/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
     Route::post('clear', [CartController::class, 'clearAllCart'])->name('cart.clear');
-    // Route::get('testimonal', [FrontendController::class, 'testimomal']);
+  
+   
 });
 
 Auth::routes();
@@ -266,3 +267,4 @@ Route::post('/comment-store', [CommentController::class, 'store'])->name('commen
 Route::post('/create-slug', [GlobalController::class, 'createSlug'])->name('create.slug');
 Route::get('/file-path',  [GlobalController::class, 'getPath'])->name('get.assets.path');
 Route::get('/clear', [GlobalController::class, 'clear'])->name('clear');
+// Route::get('/login', [LoginController::class, 'login_banner']);
