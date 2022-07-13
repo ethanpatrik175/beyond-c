@@ -56,7 +56,7 @@
                                             <div class="mb-3">
                                                 <label for="heading_oneBrown" class="form-label">Heading One</label>
                                                 <input type="text" class="form-control" name="heading[one]" id="heading_oneBrown"
-                                                    placeholder="Heading One (Brown)" value="{{old('heading.one')}}" />
+                                                    placeholder="Heading One" value="{{old('heading.one')}}" />
                                                 <div class="invalid-feedback">
                                                     Please enter valid heading one.
                                                 </div>
@@ -102,7 +102,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        {{-- <div class="col-sm-3">
                                             <div class="mb-3">
                                                 <label for="btn_title" class="form-label">Button Title One</label>
                                                 <input type="text" class="form-control" name="buttons[title1]" id="btn_title"
@@ -141,7 +141,7 @@
                                                     Please enter valid button link.
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-sm-12">
                                             <div class="mb-3">
                                                 <label for="page" class="form-label">Page</label>

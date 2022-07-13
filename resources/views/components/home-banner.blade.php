@@ -8,8 +8,8 @@
                     <p>{{ (isset($bannerTitle)) ? $bannerTitle->description : '' }}</p>
                 </div>
                 <div class="links mt-4">
-                    <button><a href="{{ route('find.your.date') }}">{{(isset($bannerTitle)) ? json_decode($bannerTitle->buttons)->title1 : ''}}</a></button>
-                    <button><a href="{{ route('front.view.events') }}">{{(isset($bannerTitle)) ? json_decode($bannerTitle->buttons)->title2 : ''}}</a></button>
+                    <button><a href="{{ route('find.your.date') }}">Find Your Date Book</a></button>
+                    <button><a href="{{ route('front.view.events') }}">Event Ticket</a></button>
                 </div>
                 <div class="count-up d-flex justify-content-center @auth {{ 'justify-content-md-center' }} @else {{ 'justify-content-md-start' }} @endauth mt-4">
                     <div class="left-count text-center">
