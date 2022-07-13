@@ -1,4 +1,5 @@
-<section class="home-banner">
+<?php $bannerImage = isset($bannerTitle) ? (isset($bannerTitle->image) ? asset('assets/frontend/images/banners/' . Str::of($bannerTitle->image)->replace(' ', '%20')) : '') : ''; ?>
+<section class="home-banner" style="background: url({{$bannerImage}}) center center no-repeat;">
     <div class="container center-container @auth {{ 'text-center' }} @endauth">
         <div class="row align-items-center">
             <div class="@auth {{ 'col-lg-12' }} @else {{ 'col-lg-5 offset-lg-1' }} @endauth">

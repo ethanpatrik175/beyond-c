@@ -45,18 +45,13 @@ class LoginController extends Controller
 
     public function loginForm()
     {
-        $data['bannerTitle'] = Banner::where('page',"home")->first();
+        $data['bannerTitle'] = Banner::where('page', "home")->first();
         return view('auth.login', $data);
     }
 
     public function adminLogin()
     {
         return view('backend.admin.login');
-    }
-
-    public function login_banner(){
-        $data['bannerTitle'] = Banner::where('page',"home")->first();
-        return view('auth.login',$data);
     }
 
     /**
@@ -70,25 +65,19 @@ class LoginController extends Controller
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
-      
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me))
-        {
-            if(Auth::check() AND (Auth::user()->status == 'active'))
-            {
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me)) {
+            if (Auth::check() and (Auth::user()->status == 'active')) {
                 return redirect(route('user.dashboard'));
-            }
-            else
-            {
+            } else {
                 Auth::logout();
-                $data['bannerTitle'] = Banner::where('page',"home")->first();
+                $data['bannerTitle'] = Banner::where('page', "home")->first();
                 $data['message'] = 'Record Not Found!, Please Try Again!';
                 return redirect()->back()->with($data);
             }
-        }
-        else
-        {
+        } else {
             $data['message'] = 'Invalid Credentials, Please Try Again!';
-            $data['bannerTitle'] = Banner::where('page',"home")->first();
+            $data['bannerTitle'] = Banner::where('page', "home")->first();
             return redirect()->back()->with($data);
         }
     }
@@ -101,11 +90,9 @@ class LoginController extends Controller
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
-        $data['bannerTitle'] = Banner::where('page',"home")->first();
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me))
-        {
-            if(Auth::check() AND (Auth::user()->status == 'active'))
-            {
+        
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me)) {
+            if (Auth::check() and (Auth::user()->status == 'active')) {
                 /**
                  * the following query is used to
                  * check that user has subscribed the package or not
@@ -123,18 +110,12 @@ class LoginController extends Controller
                 */
 
                 return redirect(route('front.home'));
-            }
-            else
-            {
+            } else {
                 Auth::logout();
-                $data['bannerTitle'] = Banner::where('page',"home")->first();
                 $data['message'] = 'Record Not Found!, Please Try Again!';
                 return redirect()->back()->with($data);
             }
-        }
-        else
-        {
-            $data['bannerTitle'] = Banner::where('page',"home")->first();
+        } else {
             $data['message'] = 'Invalid Credentials, Please Try Again!';
             return redirect()->back()->with($data);
         }
