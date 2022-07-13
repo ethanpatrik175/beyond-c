@@ -166,7 +166,7 @@
     height: calc(100vh - var(--maxmenuwh));
     min-height: 650px;
     position: relative;
-    background: url(../images/banner/home.jpg) center center no-repeat;
+    /* background: url(../images/banner/home.jpg) center center no-repeat; */
     background-size: cover;
     color: #fff;
     padding: 0;
