@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Dating;
 use App\Models\Subscription;
 use App\Models\SubscriptionHistory;
@@ -17,7 +18,6 @@ class DatingController extends Controller
     public function findYourDate()
     {
         $data['pageTitle'] = "Find Your Date";
-        $data['bannerTitle'] = "Find Your Date";
         $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
 
         $data['listUsers'] = User::has('dating')
@@ -28,6 +28,7 @@ class DatingController extends Controller
             ->where('id', '<>', $currentUserDating->id)
             ->get();
         $data['currentUserDating'] = $currentUserDating;
+        $data['bannerTitle'] = Banner::where('page',"find-your-date")->first();
 
         return view('frontend.dating.find-your-date', $data);
     }

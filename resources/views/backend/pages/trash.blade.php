@@ -56,7 +56,7 @@
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Slug</th>
-                                        <th>Short Description</th>
+                                        <th>Page Order</th>
                                         <th>Deleted At</th>
                                         <th>Added By</th>
                                         <th>Updated By</th>

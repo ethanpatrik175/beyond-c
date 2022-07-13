@@ -99,6 +99,7 @@
                                                 <label class="form-label">Parent</label>
                                                 <select data-placeholder="Select Parent" name="parent_id"
                                                     class="form-control select2"> 
+                                                    <option value="">Select Parent</option>
                                                     @foreach ($parents as $page)
                                                         <option value="{{ $page->id}}" {{ in_array($page->id, $parent) ? 'selected' : '' }}>{{ $page->name }}
                                                         </option>
@@ -110,7 +111,7 @@
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
                                                 <textarea rows="4" class="form-control" name="description" id="description" placeholder="Description here"
-                                                    required>{{ old('description') }}</textarea>
+                                                    required>{{-- old('description') --}}</textarea>
                                                 <div class="invalid-feedback">
                                                     Please enter valid description.
                                                 </div>

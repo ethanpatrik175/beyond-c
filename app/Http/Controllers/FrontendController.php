@@ -52,7 +52,6 @@ class FrontendController extends Controller
 
     public function aboutUs()
     {
-        $seconds= 10;
         $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
@@ -63,7 +62,6 @@ class FrontendController extends Controller
 
     public function blogs()
     {
-        $seconds= 10;
         $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });

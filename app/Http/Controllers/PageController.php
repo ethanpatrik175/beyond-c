@@ -19,12 +19,12 @@ class PageController extends Controller
     public function __construct()
     {
         $this->buttons = '';
-        $this->buttons .= '<a href="'.route("page.index").'" class="btn btn-sm btn-success">ALL Pages</a> &nbsp;';
-        $this->buttons .= '<a href="'.route("page.create").'" class="btn btn-sm btn-primary">ADD NEW</a> &nbsp;';
-        $this->buttons .= '<a href="'.route('pages.trash').'" class="btn btn-sm btn-danger">TRASH</a>';
+        $this->buttons .= '<a href="' . route("page.index") . '" class="btn btn-sm btn-success">ALL Pages</a> &nbsp;';
+        $this->buttons .= '<a href="' . route("page.create") . '" class="btn btn-sm btn-primary">ADD NEW</a> &nbsp;';
+        $this->buttons .= '<a href="' . route('pages.trash') . '" class="btn btn-sm btn-danger">TRASH</a>';
         $this->section = "Pages";
     }
-    
+
     public function index(Request $request)
     {
         // $data = DB::table('pages')
@@ -33,8 +33,7 @@ class PageController extends Controller
         // ->select('pages.*', 'users.first_name', 'users.last_name', 'users_updated.first_name as updated_by_first_name', 'users_updated.last_name as updated_by_last_name', 'users.role as addedBy', 'users_updated.role as updatedBy')
         // ->whereNull('pages.deleted_at')
         // ->get();
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $data = DB::table('pages')
                 ->join('users', 'pages.added_by', '=', 'users.id')
                 ->leftJoin('users as users_updated', 'pages.updated_by', '=', 'users_updated.id')
@@ -44,7 +43,7 @@ class PageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="'.route('page.edit', $row->id).'" target="_blank"><i title="Edit" class="fas fa-edit font-size-18"></i></a>';
+                    $btn = '<a href="' . route('page.edit', $row->id) . '" target="_blank"><i title="Edit" class="fas fa-edit font-size-18"></i></a>';
                     $btn .= ' <a href="javascript:void(0);" class="text-danger remove" data-id="' . $row->id . '"><i title="Delete" class="fas fa-trash-alt font-size-18"></i></a>';
                     // $btn .= ' <a href="'.route('service.images',['services', $row->id]).'" target="_blank" class="text-warning" data-id="'.$row->id.'"><i title="More Images" class="fas fa-images font-size-18"></i></a>';
                     return $btn;
@@ -69,16 +68,16 @@ class PageController extends Controller
                 //     }
                 //     return $image;
                 // })
-                ->addColumn('order', function($row){
+                ->addColumn('order', function ($row) {
                     return Str::of($row->order)->limit(100);
                 })
-                ->addColumn('added_by', function($row){
-                    return $row->first_name.' '.$row->last_name.'<br/>('.date('d-M-Y', strtotime($row->created_at)).')';
+                ->addColumn('added_by', function ($row) {
+                    return $row->first_name . ' ' . $row->last_name . '<br/>(' . date('d-M-Y', strtotime($row->created_at)) . ')';
                 })
-                ->addColumn('updated_by', function($row){
-                    if(isset($row->updatedBy)){
-                        return $row->updated_by_first_name.' '.$row->updated_by_last_name.'<br/>('.date('d-M-Y', strtotime($row->updated_at)).')';
-                    }else{
+                ->addColumn('updated_by', function ($row) {
+                    if (isset($row->updatedBy)) {
+                        return $row->updated_by_first_name . ' ' . $row->updated_by_last_name . '<br/>(' . date('d-M-Y', strtotime($row->updated_at)) . ')';
+                    } else {
                         return  '-';
                     }
                 })
@@ -130,7 +129,7 @@ class PageController extends Controller
             'name' => 'required',
             'slug' => 'required',
             'order' => 'required',
-            'link' => 'required',
+            // 'link' => 'required',
         ]);
 
         $Page = new Page();
@@ -141,16 +140,13 @@ class PageController extends Controller
         $Page->link = $request->link;
         $Page->parent_id = $request->parent_id;
 
-        if($Page->save())
-        {
+        if ($Page->save()) {
             $data['type'] = "success";
             $data['message'] = "Page Added Successfuly!.";
             $data['icon'] = 'mdi-check-all';
 
             return redirect()->route('page.index')->with($data);
-        }
-        else
-        {
+        } else {
             $data['type'] = "danger";
             $data['message'] = "Failed to Add Page, please try again.";
             $data['icon'] = 'mdi-block-helper';
@@ -159,10 +155,10 @@ class PageController extends Controller
         }
     }
 
-   
+
     public function show(Page $page)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -178,13 +174,11 @@ class PageController extends Controller
         $data['page_title'] = 'Edit & Update Page';
         $data['parents'] = Page::get();
         $data['page'] = Page::findOrFail($id);
-        if($data['page']->parent_id != null){
-            $data['parent'] = Page::where('id' , $data['page']->parent_id)->get()->toArray();  
+        if (isset($data['page']->parent_id)) {
+            $data['parent'] = Page::where('id', $data['page']->parent_id)->get()->toArray();
+        } else {
+            $data['parent'] = array();
         }
-       else{
-        $data['parent'] = null;
-       }
-    //    dd($data['parent']);
         return view('backend.pages.edit', $data);
     }
 
@@ -199,41 +193,35 @@ class PageController extends Controller
     {
         $Page = Page::findOrFail($id);
         $this->validate($request, [
-         'name' => 'required',
-         'slug' => 'required',
-         'order' => 'required',
-         'link' => 'required',
-     ]);
+            'name' => 'required',
+            'slug' => 'required',
+            'order' => 'required',
+        ]);
 
-    
-     $Page->updated_by = Auth::user()->id;
-     $Page->name = $request->name;
-     $Page->slug = $request->slug;
-     $Page->order = $request->order;
-     $Page->link = $request->link;
-     $Page->parent_id = $request->parent_id;
+        $Page->updated_by = Auth::user()->id;
+        $Page->name = $request->name;
+        $Page->slug = $request->slug;
+        $Page->order = $request->order;
+        $Page->link = $request->link;
+        $Page->parent_id = $request->parent_id;
 
-     if($Page->save())
-     {
-         $data['type'] = "success";
-         $data['message'] = "Page Updated Successfuly!.";
-         $data['icon'] = 'mdi-check-all';
+        if ($Page->save()) {
+            $data['type'] = "success";
+            $data['message'] = "Page Updated Successfuly!.";
+            $data['icon'] = 'mdi-check-all';
 
-         return redirect()->route('page.index')->with($data);
-     }
-     else
-     {
-         $data['type'] = "danger";
-         $data['message'] = "Failed to Add Page, please try again.";
-         $data['icon'] = 'mdi-block-helper';
+            return redirect()->route('page.index')->with($data);
+        } else {
+            $data['type'] = "danger";
+            $data['message'] = "Failed to Add Page, please try again.";
+            $data['icon'] = 'mdi-block-helper';
 
-         return redirect()->route('page.index')->withInput()->with($data);
-     }
+            return redirect()->route('page.index')->withInput()->with($data);
+        }
     }
 
     public function destroy($id)
     {
-        
         $page = Page::find($id);
         if ($page) {
             $page->delete();
@@ -250,10 +238,10 @@ class PageController extends Controller
             echo json_encode($notification);
         }
     }
+
     public function trash(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $data = DB::table('pages')
                 ->join('users', 'pages.added_by', '=', 'users.id')
                 ->leftJoin('users as users_updated', 'pages.updated_by', '=', 'users_updated.id')
@@ -268,18 +256,18 @@ class PageController extends Controller
                     return $btn;
                 })
                 ->addColumn('deleted_at', function ($row) {
-                    return date('d-M-Y', strtotime($row->deleted_at)).'<br /> <label class="text-primary">'.Carbon::parse($row->deleted_at)->diffForHumans().'</label>';
+                    return date('d-M-Y', strtotime($row->deleted_at)) . '<br /> <label class="text-primary">' . Carbon::parse($row->deleted_at)->diffForHumans() . '</label>';
                 })
-                ->addColumn('order', function($row){
+                ->addColumn('order', function ($row) {
                     return Str::of($row->order)->limit(100);
                 })
-                ->addColumn('added_by', function($row){
-                    return $row->first_name.' '.$row->last_name.' <br />('.Str::of($row->addedBy)->upper().')';
+                ->addColumn('added_by', function ($row) {
+                    return $row->first_name . ' ' . $row->last_name . ' <br />(' . Str::of($row->addedBy)->upper() . ')';
                 })
-                ->addColumn('updated_by', function($row){
-                    if(isset($row->updatedBy)){
-                        return $row->updated_by_first_name.' '.$row->updated_by_last_name.' <br />('.Str::of($row->updatedBy)->upper().')';
-                    }else{
+                ->addColumn('updated_by', function ($row) {
+                    if (isset($row->updatedBy)) {
+                        return $row->updated_by_first_name . ' ' . $row->updated_by_last_name . ' <br />(' . Str::of($row->updatedBy)->upper() . ')';
+                    } else {
                         return  '-';
                     }
                 })
@@ -292,6 +280,7 @@ class PageController extends Controller
         $data['page_title'] = 'Trash Page';
         return view('backend.pages.trash', $data);
     }
+
     public function restoreService(Request $request)
     {
         $Page = Page::withTrashed()->find($request->id);
@@ -310,9 +299,9 @@ class PageController extends Controller
             echo json_encode($notification);
         }
     }
+
     public function updateStatus(Request $request)
     {
-        // dd($request->all());
         $update = Page::where('id', $request->id)->update(['is_active' => $request->is_active]);
 
         if ($update) {
