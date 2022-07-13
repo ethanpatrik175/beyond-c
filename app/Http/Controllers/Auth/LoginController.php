@@ -43,10 +43,15 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function adminLogin()
+    public function loginForm()
     {
         $data['bannerTitle'] = Banner::where('page',"home")->first();
-        return view('backend.admin.login',$data);
+        return view('auth.login', $data);
+    }
+
+    public function adminLogin()
+    {
+        return view('backend.admin.login');
     }
 
     public function login_banner(){

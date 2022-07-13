@@ -56,7 +56,7 @@
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Title</th>
-                                        <th>Order</th>
+                                        <th>Page Order</th>
                                         <th>Added By</th>
                                         <th>Updated By</th>
                                         <th>Status(is active?)</th>

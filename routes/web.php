@@ -259,8 +259,9 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
 
     Route::post('/send-request', [DatingController::class, 'sendRequest'])->name('send.request');
 });
-
 //Dating Routes End
+
+Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('/contactus', [ContactController::class, 'store'])->name('store');
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank.you');
 Route::post('/comment-store', [CommentController::class, 'store'])->name('comments.store');
