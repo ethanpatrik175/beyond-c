@@ -120,16 +120,16 @@ class SectionContentController extends Controller
             $SectionContent->added_by = Auth::user()->id;
             $SectionContent->name = $request->name;
             $SectionContent->section_id = $request->section_id;
-            if($request->text == !null){
+            if(isset($request->text)){
                 $SectionContent->content = $request->text;
             }
-            if($request->link == !null){
+            if(isset($request->link)){
                 $SectionContent->content = $request->link;
             }
-            if($request->meta_description == !null){
+            if(isset($request->meta_description)){
                 $SectionContent->content = $request->meta_description;
             }
-           if($request->file('image') == !null){
+           if($request->hasFile('image')){
             $image = $request->file('image');
             if ($image->move('assets/frontend/sectioncontent/', $image->getClientOriginalName())) {
                 $SectionContent->content = $image->getClientOriginalName();

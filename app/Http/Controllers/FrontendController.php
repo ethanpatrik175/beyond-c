@@ -45,6 +45,15 @@ class FrontendController extends Controller
             return Section::with('sectioncontent')->where('page_id',1)->where('name','section_5')->first();
         });
 
+        $data['footerContent'] = Cache::rememberForever('footerContent', function () {
+            $footer['logo'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_1')->first();
+            $footer['desc'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_2')->first();
+            $footer['number'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_3')->first();
+            $footer['email'] =  Section::with('sectioncontent')->where('page_id',17)->where('name','section_4')->first();
+            $footer['Adress'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_5')->first();
+            return $footer;
+        });
+       
         $data['bannerTitle'] = Banner::where('page',"home")->first();
         return view('welcome',$data);
     }
