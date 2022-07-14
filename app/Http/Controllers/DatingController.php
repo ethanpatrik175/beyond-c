@@ -300,8 +300,6 @@ class DatingController extends Controller
             'action' => 'required|in:makefriend,unfriend',
         ]);
 
-        // dd($request->all());
-
         $recipient = User::has('dating')->with('dating')->findOrFail($request->id);
         $user = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
         

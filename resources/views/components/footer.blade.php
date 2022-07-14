@@ -1,13 +1,9 @@
 <footer class="position-relative">
     <div class="container">
         <div class="row">
-            <?php
-                $footer = Cache::get('footerContent');
-                // dd($footer);
-                // dd($footer['logo']->sectioncontent[0]->content);
-                ?>
+            <?php $footer = (Cache::has('footerContent') ? Cache::get('footerContent') : array()); ?>
             <div class="col-lg-4">
-                <img src="{{ asset('assets/frontend/sectioncontent/' . $footer['logo']->sectioncontent[0]->content) ?? '' }}" alt="">
+                <img src="{{ asset('assets/frontend/sectioncontent/' . ( isset($footer) ? @$footer['logo']->sectioncontent[0]->content : '') )}}" alt="">
                 
                 <p class="mt-md-4 mt-3">{{$footer['desc']->sectioncontent[0]->content ?? ''}}</p>
                 <div class="social-links mt-4">
