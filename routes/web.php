@@ -268,4 +268,3 @@ Route::post('/comment-store', [CommentController::class, 'store'])->name('commen
 Route::post('/create-slug', [GlobalController::class, 'createSlug'])->name('create.slug');
 Route::get('/file-path',  [GlobalController::class, 'getPath'])->name('get.assets.path');
 Route::get('/clear', [GlobalController::class, 'clear'])->name('clear');
-// Route::get('/login', [LoginController::class, 'login_banner']);
