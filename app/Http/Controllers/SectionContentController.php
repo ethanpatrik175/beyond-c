@@ -6,6 +6,7 @@ use App\Models\SectionContent;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -107,40 +108,24 @@ class SectionContentController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|max:190',
-        //     'title' => 'required|max:190',
-        //     'description' => 'required',
-        //     'short_description' => 'required',
-        //     'image' => 'image|max:1024'
-        // ], [
-        //     'image'=>'Please upload valid image'
-        // ]);
-        // dd($request->all());
 
         $SectionContent = new SectionContent();
         $SectionContent->added_by = Auth::user()->id;
         $SectionContent->name = $request->name;
         $SectionContent->section_id = $request->section_id;
-
         if (isset($request->text)) {
             $SectionContent->content = $request->text;
         }
-
         if (isset($request->link)) {
             $SectionContent->content = $request->link;
         }
-
         if (isset($request->meta_description)) {
             $SectionContent->content = $request->meta_description;
         }
-
         if ($request->hasFile('image')) {
-
             $request->validate([
                 'image' => 'max:1024'
             ]);
-
             $image = $request->file('image');
             if ($image->move('assets/frontend/sectioncontent/', $image->getClientOriginalName())) {
                 $SectionContent->content = $image->getClientOriginalName();
@@ -227,16 +212,19 @@ class SectionContentController extends Controller
         $SectionContent->updated_by = Auth::user()->id;
         $SectionContent->name = $request->name;
         $SectionContent->section_id = $request->section_id;
-        if ($request->text == !null) {
+        if (isset($request->text)) {
             $SectionContent->content = $request->text;
         }
-        if ($request->link == !null) {
+        if (isset($request->link)) {
             $SectionContent->content = $request->link;
         }
-        if ($request->meta_description == !null) {
+        if (isset($request->meta_description)) {
             $SectionContent->content = $request->meta_description;
         }
-        if ($request->file('image') == !null) {
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'max:1024'
+            ]);
             $image = $request->file('image');
             if ($image->move('assets/frontend/sectioncontent/', $image->getClientOriginalName())) {
                 $SectionContent->content = $image->getClientOriginalName();
