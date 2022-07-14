@@ -34,7 +34,8 @@ $(document).on('submit', '.request-form', function (event) {
                 toastr["error"](response.message);
                 // $(document).find('#messages').html('<div class="col-sm-12"> <div class="alert alert-danger alert-dismissible fade show" role="alert">' + response.message + ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');
             } else {
-                $('#icon' + item).attr('class', response.icon);
+                $('#btn' + item).attr('class', response.btn_class);
+                $('#btn' + item).attr('value', response.btn_txt);
                 $('#action' + item).val(response.action);
                 toastr["success"](response.message);
                 // $(document).find('#messages').html('<div class="col-sm-12"> <div class="alert alert-success alert-dismissible fade show" role="alert">' + response.message + ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');

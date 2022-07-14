@@ -310,7 +310,8 @@ class DatingController extends Controller
             if($user->befriend($recipient))
             {
                 $data['type'] = 'success';
-                $data['icon'] = 'fa-solid fa-user-check';
+                $data['btn_txt'] = 'Cancel Request';
+                $data['btn_class'] = 'btn btn-danger btn-sm';
                 $data['message'] = 'Friend request has been sent successfully.';
                 $data['action'] = 'unfriend';
             }
@@ -325,7 +326,8 @@ class DatingController extends Controller
             if($user->unfriend($recipient))
             {
                 $data['type'] = 'success';
-                $data['icon'] = 'fa-solid fa-user-plus';
+                $data['btn_txt'] = 'Send Request';
+                $data['btn_class'] = 'btn btn-primary btn-sm';
                 $data['message'] = 'Friend request Cancelled Successfully!';
                 $data['action'] = 'makefriend';
             }
