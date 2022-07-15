@@ -7,74 +7,91 @@
 @push('styles')
     <style>
         /* .user-avatar {
-                                    width: auto;
-                                    height: 150px !important;
-                                    margin: 0 auto;
-                                    background-color: #000;
-                                    padding: 10px;
-                                    border-top-left-radius: 0px;
-                                    border-bottom-left-radius: 0px
-                                } */
+                                        width: auto;
+                                        height: 150px !important;
+                                        margin: 0 auto;
+                                        background-color: #000;
+                                        padding: 10px;
+                                        border-top-left-radius: 0px;
+                                        border-bottom-left-radius: 0px
+                                    } */
 
         /* .main-container.events-page .events-archive .events-box .event-right-box {
-                            padding: 0px 15px;
-                        }
+                                padding: 0px 15px;
+                            }
 
-                        .main-container.events-page .events-archive .events-box .event-right-box .event-details p.detail {
-                            font-size: 14px;
-                            font-weight: 600;
-                        }
+                            .main-container.events-page .events-archive .events-box .event-right-box .event-details p.detail {
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
 
-                        .main-container.events-page .events-archive .events-box .event-comments {
-                            right: 30px;
-                            bottom: 15px;
-                        }
+                            .main-container.events-page .events-archive .events-box .event-comments {
+                                right: 30px;
+                                bottom: 15px;
+                            }
 
-                        .main-container.events-page .events-archive .events-box .event-share {
-                            top: 15px;
-                        }
+                            .main-container.events-page .events-archive .events-box .event-share {
+                                top: 15px;
+                            }
 
-                        .fa-message,
-                        .fa-user-plus {
-                            color: #e50000 !important;
-                            font-size: 20px !important;
-                        }
+                            .fa-message,
+                            .fa-user-plus {
+                                color: #e50000 !important;
+                                font-size: 20px !important;
+                            }
 
-                        #form-submit {
-                            background: none;
-                            padding: 0px;
-                        }
+                            #form-submit {
+                                background: none;
+                                padding: 0px;
+                            }
 
-                        .main-container.events-page .events-archive .events-box .event-right-box {
-                            border-top-right-radius: 0px;
-                            border-bottom-right-radius: 0px;
-                        }
+                            .main-container.events-page .events-archive .events-box .event-right-box {
+                                border-top-right-radius: 0px;
+                                border-bottom-right-radius: 0px;
+                            }
 
-                        .main-container.events-page .events-archive .events-box .event-left-box img {
-                            border-top-left-radius: 0px;
-                            border-bottom-left-radius: 0px;
-                        } */
+                            .main-container.events-page .events-archive .events-box .event-left-box img {
+                                border-top-left-radius: 0px;
+                                border-bottom-left-radius: 0px;
+                            } */
 
         /* .alert.alert-success.alert-dismissible.fade.show {
-                                                                position: fixed;
-                                                                bottom: 50px;
-                                                                left: 50%;
-                                                                transform: translate(-50%);
-                                                                height: 70px;
-                                                                display: flex;
-                                                                align-items: center;
-                                                                z-index: 9999;
-                                                                background: darkgreen;
-                                                                color: white;
-                                                                text-align: center !important;
-                                                                padding: 0px !important;
-                                                                max-width: 450px !important;
-                                                                width: 100%;
-                                                                justify-content: center;
-                                                            } */
+                                                                    position: fixed;
+                                                                    bottom: 50px;
+                                                                    left: 50%;
+                                                                    transform: translate(-50%);
+                                                                    height: 70px;
+                                                                    display: flex;
+                                                                    align-items: center;
+                                                                    z-index: 9999;
+                                                                    background: darkgreen;
+                                                                    color: white;
+                                                                    text-align: center !important;
+                                                                    padding: 0px !important;
+                                                                    max-width: 450px !important;
+                                                                    width: 100%;
+                                                                    justify-content: center;
+                                                                } */
 
         section.section-padding {
             padding: 20px 0px 50px 0px;
+        }
+
+        .testimonial .testimonial-box .text-box::before {
+            content: '' !important;
+            background: #fff;
+        }
+
+        p.detail {
+            font-weight: 400;
+        }
+
+        .main-container.testimonial-page .testimonial .testimonial-box:hover .text-box::before {
+            background: var(--red);
+        }
+
+        .testimonial .testimonial-box:hover{
+            color: #fff;
         }
     </style>
     <link rel="stylesheet" href="{{ asset('assets/backend/libs/toastr/build/toastr.min.css') }}" />
