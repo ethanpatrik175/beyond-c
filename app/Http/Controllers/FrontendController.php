@@ -64,6 +64,16 @@ class FrontendController extends Controller
         $data['testimonal_1'] = Cache::rememberForever('testimonal_1', function () {
             return Section::with('sectioncontent')->where('page_id',3)->where('name','section_1')->first();
         });
+        $data['aboutus'] = Cache::rememberForever('aboutus', function () {
+            $aboutus['heading_1'] = Section::with('sectioncontent')->where('page_id',12)->where('name','section_1')->first();
+            $aboutus['heading_2'] = Section::with('sectioncontent')->where('page_id',12)->where('name','section_2')->first();
+            $aboutus['para_1'] = Section::with('sectioncontent')->where('page_id',12)->where('name','section_3')->first();
+            $aboutus['para_2'] =  Section::with('sectioncontent')->where('page_id',12)->where('name','section_4')->first();
+            $aboutus['heading_3'] =  Section::with('sectioncontent')->where('page_id',12)->where('name','section_5')->first();
+            $aboutus['para_3'] =  Section::with('sectioncontent')->where('page_id',12)->where('name','section_6')->first();
+            $aboutus['image'] =  Section::with('sectioncontent')->where('page_id',12)->where('name','section_7')->first();
+            return $aboutus;
+        });
         $data['pageTitle'] = "About Us";
         $data['bannerTitle'] = Banner::where('page',"about-us")->first();
         return view('frontend.about-us', $data);

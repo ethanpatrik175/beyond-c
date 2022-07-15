@@ -7,7 +7,7 @@
                 // dd($footer['logo']->sectioncontent[0]->content);
                 ?>
             <div class="col-lg-4">
-                <img src="{{ asset('assets/frontend/sectioncontent/' . $footer['logo']->sectioncontent[0]->content) ?? '' }}" alt="">
+                <img src="{{ asset('assets/frontend/sectioncontent/' . @$footer['logo']->sectioncontent[0]->content) ?? '' }}" alt="">
                 
                 <p class="mt-md-4 mt-3">{{$footer['desc']->sectioncontent[0]->content ?? ''}}</p>
                 <div class="social-links mt-4">

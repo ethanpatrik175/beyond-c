@@ -107,10 +107,11 @@ class SectionContentController extends Controller
      */
     public function store(Request $request)
     {
-        
+           
             $SectionContent = new SectionContent();
             $SectionContent->added_by = Auth::user()->id;
             $SectionContent->name = $request->name;
+            $SectionContent->content_type = $request->content_type;
             $SectionContent->section_id = $request->section_id;
             if(isset($request->text)){
                 $SectionContent->content = $request->text;
@@ -212,6 +213,7 @@ class SectionContentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $SectionContent = SectionContent::findOrFail($id);
         //     $this->validate($request, [
         //         'name' => 'required',
@@ -219,19 +221,21 @@ class SectionContentController extends Controller
         //         'content' => 'required',
     
         //  ]);
+          
          $SectionContent->updated_by = Auth::user()->id;
          $SectionContent->name = $request->name;
          $SectionContent->section_id = $request->section_id;
+         $SectionContent->content_type = $request->content_type;
             if(isset($request->text )){
                 $SectionContent->content = $request->text;
             }
-            if(isset($request->link)){
+            elseif(isset($request->link)){
                 $SectionContent->content = $request->link;
             }
-            if(isset($request->meta_description)){
+            elseif(isset($request->meta_description)){
                 $SectionContent->content = $request->meta_description;
             }
-           if($request->hasFile('image')){
+            elseif($request->hasFile('image')){
             $request->validate([
                 'image' => 'max:1024'
                 ], [

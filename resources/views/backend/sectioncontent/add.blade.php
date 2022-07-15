@@ -89,7 +89,7 @@
                                         <div class="col-sm-4">
                                             <div class="mb-3">
                                                 <label class="form-label">Content</label>
-                                                <select data-placeholder="Select Parent" class="form-control">
+                                                <select data-placeholder="Select Parent" class="form-control" name="content_type">
                                                     <option value="">Select Section</option>
                                                     <option value="Text">Text</option>
                                                     <option value="File">File/Image</option>

@@ -14,20 +14,12 @@
                 <div class="row">
                     <div class="col-lg-12 text-lg-center">
                         <div class="section-heading">
-                            <h5>Social Networking</h5>
-                            <h1 class="text-white">Why Choose Engaging Singles</h1>
-                            <p class="mt-lg-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti ab, quos
-                                velit est omnis voluptate odit mollitia fugiat illum? Delectus illum temporibus aspernatur id
-                                tempore quaerat quibusdam deleniti ea consectetur! Optio
-                                qui odit quas quibusdam, natus doloremque et id a consequatur, blanditiis itaque commodi
-                                voluptas mollitia vero omnis aliquid suscipit qui odit quas quibusdam, natus doloremque et id a
-                                consequatur.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti ab, quos velit est omnis
-                                voluptate odit mollitia fugiat illum? Delectus illum temporibus aspernatur id tempore quaerat
-                                quibusdam deleniti ea consectetur! Optio
-                                qui odit quas quibusdam, natus doloremque et id a consequatur, blanditiis itaque commodi
-                                voluptas mollitia vero omnis aliquid suscipit qui odit quas quibusdam, natus doloremque et id a
-                                consequatur.</p>
+                            {{-- @dd($aboutus['heading_3']->sectioncontent[0]->content) --}}
+                            
+                            <h5>{{ isset($aboutus) ? (isset($aboutus['heading_1']) ? $aboutus['heading_1']->sectioncontent[0]->content : '') : '' }}</h5>
+                            <h1 class="text-white">{{ isset($aboutus) ? (isset($aboutus['heading_2']) ? $aboutus['heading_2']->sectioncontent[0]->content : '') : '' }}</h1>
+                            <p class="mt-lg-4">{{ isset($aboutus) ? (isset($aboutus['para_1']) ? $aboutus['para_1']->sectioncontent[0]->content : '') : '' }}</p>
+                            <p>{{ isset($aboutus) ? (isset($aboutus['para_2']) ? $aboutus['para_2']->sectioncontent[0]->content : '') : '' }}</p>
                         </div>
                     </div>
 
@@ -112,16 +104,14 @@
                 <div class="row align-items-center">
                     <div class="col-lg-5">
                         <div class="section-heading">
-                            <h5 class="text-white">Social Network</h5>
-                            <h1 class="text-white mt-3">Learn A Little More About Engaging Singles And How We Started</h1>
-                            <p class="mt-lg-3 text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti ab,
-                                quos velit est omnis voluptate odit mollitia fugiat illum? Delectus illum temporibus aspernatur
-                                id tempore quaerat quibusdam deleniti ea consectetur! Optio</p>
+                            <h5 class="text-white">{{ isset($aboutus) ? (isset($aboutus['heading_1']) ? $aboutus['heading_1']->sectioncontent[0]->content : '') : '' }}</h5>
+                            <h1 class="text-white mt-3">{{ isset($aboutus) ? (isset($aboutus['heading_3']) ? $aboutus['heading_3']->sectioncontent[0]->content : '') : '' }}</h1>
+                            <p class="mt-lg-3 text-white">{{ isset($aboutus) ? (isset($aboutus['para_3']) ? $aboutus['para_3']->sectioncontent[0]->content : '') : '' }}</p>
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="img-div">
-                            <img src="{{asset('assets/frontend/images/beyond-8.jpg')}}" alt="">
+                            <img src="{{ asset('assets/frontend/sectioncontent/' . @$aboutus['image']->sectioncontent[0]->content) ?? '' }}" alt="">
                         </div>
                     </div>
                 </div>
