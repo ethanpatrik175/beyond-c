@@ -108,11 +108,12 @@ class SectionContentController extends Controller
      */
     public function store(Request $request)
     {
-
+       
         $SectionContent = new SectionContent();
         $SectionContent->added_by = Auth::user()->id;
         $SectionContent->name = $request->name;
         $SectionContent->section_id = $request->section_id;
+        $SectionContent->content_type = $request->content_type;
         if (isset($request->text)) {
             $SectionContent->content = $request->text;
         }
@@ -213,6 +214,7 @@ class SectionContentController extends Controller
         $SectionContent->updated_by = Auth::user()->id;
         $SectionContent->name = $request->name;
         $SectionContent->section_id = $request->section_id;
+        $SectionContent->content_type = $request->content_type;
         if (isset($request->text)) {
             $SectionContent->content = $request->text;
         }

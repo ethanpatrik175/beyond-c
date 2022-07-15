@@ -7,16 +7,17 @@
                 
                 <p class="mt-md-4 mt-3">{{$footer['desc']->sectioncontent[0]->content ?? ''}}</p>
                 <div class="social-links mt-4">
-                    <a href="#">
+                    {{-- @dd($footer['link_2']->sectioncontent[0]->content); --}}
+                    <a href="{{@$footer['link_1']->sectioncontent[0]->content ?? ''}}" target="_blank">
                         <i class="fa-brands fa-facebook-f"></i>
                     </a>
-                    <a href="#">
+                    <a href="{{@$footer['link_2']->sectioncontent[0]->content ?? ''}}" target="_blank">
                         <i class="fa-brands fa-twitter"></i>
                     </a>
-                    <a href="#">
+                    <a href="{{@$footer['link_3']->sectioncontent[0]->content ?? ''}}" target="_blank">
                         <i class="fa-brands fa-linkedin-in"></i>
                     </a>
-                    <a href="#">
+                    <a href="{{@$footer['link_4']->sectioncontent[0]->content ?? ''}}" target="_blank">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                 </div>

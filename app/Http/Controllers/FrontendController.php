@@ -51,6 +51,10 @@ class FrontendController extends Controller
             $footer['number'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_3')->first();
             $footer['email'] =  Section::with('sectioncontent')->where('page_id',17)->where('name','section_4')->first();
             $footer['Adress'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_5')->first();
+            $footer['link_1'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_6')->first();
+            $footer['link_2'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_7')->first();
+            $footer['link_3'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_8')->first();
+            $footer['link_4'] = Section::with('sectioncontent')->where('page_id',17)->where('name','section_9')->first();
             return $footer;
         });
        

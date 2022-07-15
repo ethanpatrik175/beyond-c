@@ -182,12 +182,6 @@
         CKEDITOR.replace('description');
     </script>
     <script type="text/javascript">
-        // function ShowHideDiv() {
-        //     console.log()
-        //         var ddlPassport = document.getElementById("ddlPassport");
-        //         var dvPassport = document.getElementById("dvPassport");
-        //         dvPassport.style.display = ddlPassport.value == "T" ? "block" : "none";
-        //     }
         $(document).ready(function() {
             $("select").change(function() {
                 $(this).find("option:selected").each(function() {
@@ -198,11 +192,11 @@
                         $("#" + val).val('');
                     } else {
                         $(".msg").hide();
-                        // $(".msg" + val).val('');
+                    
                     }
                 });
             }).change();
         });
-      
+       
     </script>
 @endpush
