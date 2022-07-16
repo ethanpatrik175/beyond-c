@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\HttpProtocol::class,
     ];
 
     /**
@@ -66,6 +67,6 @@ class Kernel extends HttpKernel
         'admin.middleware' => \App\Http\Middleware\AdminMiddleware::class,
         'customer.middleware' => \App\Http\Middleware\CustomerMiddleware::class,
         'datting.middleware' => \App\Http\Middleware\DatingMiddleware::class,
-     
+
     ];
 }

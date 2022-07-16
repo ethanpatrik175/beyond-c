@@ -69,7 +69,8 @@ class DatingController extends Controller
     public function stepTwoProcess(Request $request)
     {
         $request->validate([
-            'date_of_birth' => 'required'
+            'date_of_birth' => 'required',
+            'height' => 'required'
         ], [
             'date_of_birth.required' => 'Please select valid date of birth'
         ]);
@@ -84,6 +85,7 @@ class DatingController extends Controller
         $stepTwo = new stdClass;
         $stepTwo->date_of_birth = $request->date_of_birth;
         $stepTwo->body_type = $request->body_type;
+        $stepTwo->height = $request->height;
         $stepTwo->relationship_status = $request->relationship_status;
 
         $request->session()->put('datingStepTwo', $stepTwo);

@@ -19,6 +19,17 @@
 
         <div class="col-lg-12 mt-3">
             <div class="form-group text-start">
+                <label for="height" class="black-text mb-1">Define your height in centimeters:</label>
+                <small class="text-primary">One inch equals 2.54 centimeters (cm)</small>
+                <input type="number" min="0" step="0.01" name="height" id="height" placeholder="Height in centimeters" class="form-control" required/>
+                <div class="invalid-feedback">
+                    Enter Valid Height
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 mt-3">
+            <div class="form-group text-start">
                 <label for="body_type" class="black-text mb-1">How would you describe your body type?</label>
                 <select name="body_type" id="body_type" class="form-select">
                     <option value="">Select Body Type</option>
