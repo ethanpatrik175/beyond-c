@@ -258,6 +258,11 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
     Route::post('/subscribe-process', [DatingController::class, 'subscribeProcess'])->name('subscribe.process');
 
     Route::post('/send-request', [DatingController::class, 'sendRequest'])->name('send.request');
+
+    Route::get('/make-friends', [DatingController::class, 'makeFriends'])->name('make.friends');
+    Route::get('/my-friends', [DatingController::class, 'myFriends'])->name('my.friends');
+    Route::get('/new-requests', [DatingController::class, 'newRequests'])->name('new.requests');
+    Route::get('/sent-requests', [DatingController::class, 'sentRequests'])->name('sent.requests');
 });
 //Dating Routes End
 

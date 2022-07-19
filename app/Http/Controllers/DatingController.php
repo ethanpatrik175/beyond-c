@@ -319,7 +319,6 @@ class DatingController extends Controller
                 $data['type'] = 'error';
                 $data['message'] = 'Something went wrong, please try again.';
             }
-            
         }
         elseif($request->action == 'unfriend')
         {
@@ -337,6 +336,70 @@ class DatingController extends Controller
                 $data['message'] = 'Something went wrong, please try again.';
             }
         }   
-        return response($data);
+        // return response($data);
+    }
+
+    // get user firends
+    public function myFriends()
+    {
+        $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
+        $user = User::findOrFail($currentUserDating->id);
+        $data['friends'] = $user->getFriends();
+        return view('frontend.dating.my-friends', $data);
+    }
+
+    // get new / pending friend requests
+    public function newRequests()
+    {
+        $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
+        $user = User::findOrFail($currentUserDating->id);
+        $friends = $user->getFriendRequests()->pluck('id');
+
+        $data['friends'] = User::has('dating')
+            ->with(['dating' => function ($q) use ($currentUserDating) {
+                $q->where('status', 'active');
+            }])
+            ->whereStatus('pending')
+            ->whereIn('id', $friends)
+            ->get();
+
+        return view('frontend.dating.new-requests', $data);
+    }
+
+    public function makeFriends()
+    {
+        $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
+
+        $data['listUsers'] = User::has('dating')
+            ->with(['dating' => function ($q) use ($currentUserDating) {
+                $q->where('gender', '<>', $currentUserDating->dating->gender)->where('status', 'active');
+            }])
+            ->whereStatus('active')
+            ->where('id', '<>', $currentUserDating->id)
+            ->get();
+        $data['currentUserDating'] = $currentUserDating;
+        $data['bannerTitle'] = Banner::where('page',"find-your-date")->first();
+
+        return view('frontend.dating.make-friends', $data);
+    }
+
+    public function sentRequests()
+    {
+        $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
+        $user = User::findOrFail($currentUserDating->id);
+        $friends = $user->getPendingFriendships()->pluck('recipient_id')->toArray();
+
+        $data['friends'] = User::has('dating')
+            ->with(['dating' => function ($q) use ($currentUserDating) {
+                $q->where('status', 'active');
+            }])
+            ->whereStatus('active')
+            ->whereIn('id', $friends)
+            ->get();
+        $data['currentUserDating'] = $currentUserDating;
+        
+        dd($user->getPendingFriendships(), auth()->user()->id);
+
+        return view('frontend.dating.sent-requests', $data);
     }
 }

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -16,39 +16,66 @@ $(document).ready(function(){
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    $(document).on('submit', '.request-form', function (event) {
+        event.preventDefault();
+        let item = $(this).attr('data-item');
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            beforeSend: function () {
+                $('.item-' + item).LoadingOverlay("show");
+            },
+            success: function (response) {
+                $('.item-' + item).LoadingOverlay("hide", true);
+                $(document).find('#messages').html('');
+                if (response.type == "error") {
+                    toastr["error"](response.message);
+                } else {
+                    $('#btn' + item).attr('class', response.btn_class);
+                    $('#btn' + item).attr('value', response.btn_txt);
+                    $('#action' + item).val(response.action);
+                    toastr["success"](response.message);
+                    $('.testimonial-box-' + item).remove();
+                }
+            },
+            error: function (response) {
+                $('.item-' + item).LoadingOverlay("hide", true);
+                $(document).find('#messages').html('');
+                $.each(response.responseJSON.errors, function (key, val) {
+                    toastr["error"](response.message);
+                });
+            }
+        });
+    });
+
 });
-$(document).on('submit', '.request-form', function (event) {
-    event.preventDefault();
-    let item = $(this).attr('data-item');
+
+
+function searchFor(event) {
+    if ($(document).find('.left-item').hasClass('active')) {
+        $(document).find('.left-item').removeClass('active');
+    }
+    $(event).addClass('active');
+    
     $.ajax({
-        url: $(this).attr('action'),
-        type: $(this).attr('method'),
-        data: $(this).serialize(),
+        url: $(event).attr('data-url'),
+        type: 'GET',
         beforeSend: function () {
-            $('.item-' + item).LoadingOverlay("show");
+            $(document).find('#results').LoadingOverlay("show");
         },
         success: function (response) {
-            $('.item-' + item).LoadingOverlay("hide", true);
-            $(document).find('#messages').html('');
-            if (response.type == "error") {
-                toastr["error"](response.message);
-                // $(document).find('#messages').html('<div class="col-sm-12"> <div class="alert alert-danger alert-dismissible fade show" role="alert">' + response.message + ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');
-            } else {
-                $('#btn' + item).attr('class', response.btn_class);
-                $('#btn' + item).attr('value', response.btn_txt);
-                $('#action' + item).val(response.action);
-                toastr["success"](response.message);
-                // $(document).find('#messages').html('<div class="col-sm-12"> <div class="alert alert-success alert-dismissible fade show" role="alert">' + response.message + ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');
-            }
+            $(document).find('#results').LoadingOverlay("hide", true);
+            $(document).find('#results').html(response);
         },
         error: function (response) {
-            $('.item-' + item).LoadingOverlay("hide", true);
+            $(document).find('#results').LoadingOverlay("hide", true);
             $(document).find('#messages').html('');
             $.each(response.responseJSON.errors, function (key, val) {
                 toastr["error"](response.message);
-                // $(document).find('#messages').html('<div class="col-sm-12"> <div class="alert alert-danger alert-dismissible fade show" role="alert">' + val + ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');
             });
         }
     });
-});
-
+    // event.preventDefault();
+}
