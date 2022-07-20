@@ -50,6 +50,7 @@ $(document).ready(function () {
         });
     });
 
+
 });
 
 
@@ -58,7 +59,7 @@ function searchFor(event) {
         $(document).find('.left-item').removeClass('active');
     }
     $(event).addClass('active');
-    
+
     $.ajax({
         url: $(event).attr('data-url'),
         type: 'GET',

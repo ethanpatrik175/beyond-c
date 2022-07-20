@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use stdClass;
 
@@ -299,12 +300,12 @@ class DatingController extends Controller
     public function sendRequest(Request $request)
     {
         $request->validate([
-            'action' => 'required|in:makefriend,unfriend',
+            'action' => 'required|in:makefriend,unfriend,acceptrequest,rejectrequest,blockuser,unblockfriend',
         ]);
 
         $recipient = User::has('dating')->with('dating')->findOrFail($request->id);
         $user = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
-        
+
         if($request->action == "makefriend")
         {
             if($user->befriend($recipient))
@@ -312,7 +313,7 @@ class DatingController extends Controller
                 $data['type'] = 'success';
                 $data['btn_txt'] = 'Cancel Request';
                 $data['btn_class'] = 'btn btn-danger btn-sm';
-                $data['message'] = 'Friend request has been sent successfully.';
+                $data['message'] = 'Request Sent Successfully.';
                 $data['action'] = 'unfriend';
             }
             else{
@@ -327,7 +328,7 @@ class DatingController extends Controller
                 $data['type'] = 'success';
                 $data['btn_txt'] = 'Send Request';
                 $data['btn_class'] = 'btn btn-primary btn-sm';
-                $data['message'] = 'Friend request Cancelled Successfully!';
+                $data['message'] = 'Unfriend Successfully!';
                 $data['action'] = 'makefriend';
             }
             else
@@ -335,16 +336,91 @@ class DatingController extends Controller
                 $data['type'] = 'error';
                 $data['message'] = 'Something went wrong, please try again.';
             }
-        }   
-        // return response($data);
+        }
+        elseif($request->action == 'acceptrequest')
+        {
+            if($user->acceptFriendRequest($recipient))
+            {
+                $data['type'] = 'success';
+                $data['btn_txt'] = 'Unfriend';
+                $data['btn_class'] = 'btn btn-sm btn-primary';
+                $data['message'] = 'Accepted Successfully!';
+                $data['action'] = 'unfriend';
+            }
+            else
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
+        }
+        elseif($request->action == 'rejectrequest')
+        {
+            if($user->denyFriendRequest($recipient))
+            {
+                $data['type'] = 'success';
+                $data['btn_txt'] = 'Send Request';
+                $data['btn_class'] = 'btn btn-primary btn-sm';
+                $data['message'] = 'Rejected Successfully!';
+                $data['action'] = 'makefriend';
+            }
+            else
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
+        }
+        elseif($request->action == 'blockuser')
+        {
+            if($user->blockFriend($recipient))
+            {
+                $data['type'] = 'success';
+                $data['btn_txt'] = 'Send Request';
+                $data['btn_class'] = 'btn btn-primary btn-sm';
+                $data['message'] = 'Blocked Successfully!';
+                $data['action'] = 'makefriend';
+            }
+            else
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
+        }
+        elseif($request->action == 'unblockfriend')
+        {
+            $unblock = DB::table('friendships')->where(['sender_id'=>$user->id,'recipient_id'=>$recipient->id])->update(['status'=>'accepted']);
+            if($unblock)
+            {
+                $data['type'] = 'success';
+                $data['btn_txt'] = 'Send Request';
+                $data['btn_class'] = 'btn btn-primary btn-sm';
+                $data['message'] = 'Unblocked Successfully!';
+                $data['action'] = 'makefriend';
+            }
+            else
+            {
+                $data['type'] = 'error';
+                $data['message'] = 'Something went wrong, please try again.';
+            }
+        }
+
+        return response($data);
     }
 
     // get user firends
     public function myFriends()
     {
         $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
-        $user = User::findOrFail($currentUserDating->id);
-        $data['friends'] = $user->getFriends();
+        $friends = $currentUserDating->getFriends()->pluck('id')->toArray();
+
+        $data['friends'] = User::has('dating')
+            ->with(['dating' => function ($q) use ($currentUserDating) {
+                $q->where('status', 'active');
+            }])
+            ->whereStatus('active')
+            ->whereIn('id', $friends)
+            ->get();
+        $data['currentUserDating'] = $currentUserDating;
+
         return view('frontend.dating.my-friends', $data);
     }
 
@@ -352,16 +428,16 @@ class DatingController extends Controller
     public function newRequests()
     {
         $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
-        $user = User::findOrFail($currentUserDating->id);
-        $friends = $user->getFriendRequests()->pluck('id');
+        $friends = $currentUserDating->getFriendRequests()->pluck('sender_id')->toArray();
 
         $data['friends'] = User::has('dating')
             ->with(['dating' => function ($q) use ($currentUserDating) {
                 $q->where('status', 'active');
             }])
-            ->whereStatus('pending')
+            ->whereStatus('active')
             ->whereIn('id', $friends)
             ->get();
+        $data['currentUserDating'] = $currentUserDating;
 
         return view('frontend.dating.new-requests', $data);
     }
@@ -386,20 +462,15 @@ class DatingController extends Controller
     public function sentRequests()
     {
         $currentUserDating = User::has('dating')->with('dating')->findOrFail(auth()->user()->id);
-        $user = User::findOrFail($currentUserDating->id);
-        $friends = $user->getPendingFriendships()->pluck('recipient_id')->toArray();
-
-        $data['friends'] = User::has('dating')
+        $data['listUsers'] = User::has('dating')
             ->with(['dating' => function ($q) use ($currentUserDating) {
-                $q->where('status', 'active');
+                $q->where('gender', '<>', $currentUserDating->dating->gender)->where('status', 'active');
             }])
             ->whereStatus('active')
-            ->whereIn('id', $friends)
+            ->where('id', '<>', $currentUserDating->id)
             ->get();
         $data['currentUserDating'] = $currentUserDating;
         
-        dd($user->getPendingFriendships(), auth()->user()->id);
-
         return view('frontend.dating.sent-requests', $data);
     }
 }

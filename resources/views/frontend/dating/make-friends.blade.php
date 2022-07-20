@@ -1,7 +1,7 @@
 <div class="row">
     @forelse ($listUsers as $user)
         @if (isset($user->dating))
-            @if (!$currentUserDating->hasSentFriendRequestTo($user))
+            @if (!$currentUserDating->isFriendWith($user) && !$currentUserDating->hasSentFriendRequestTo($user))
                 <div class="col-lg-4 mb-3 testimonial-box-{{ $user->id }}">
                     <div class="testimonial-box">
                         <div class="row align-items-center item-{{ $user->id }}">
@@ -36,26 +36,55 @@
                             <div class="col-lg-3 col-3"></div>
                             <div class="col-lg-9 col-9">
                                 <hr class="m-0 p-0" />
-                                <form class="request-form mt-1" data-item="{{ $user->id }}"
-                                    action="{{ route('dating.send.request') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $user->id }}" />
-                                    @if ($currentUserDating->hasSentFriendRequestTo($user))
-                                        <input type="hidden" name="action" id="action{{ $user->id }}"
-                                            value="unfriend" />
-                                    @else
-                                        <input type="hidden" name="action" id="action{{ $user->id }}"
-                                            value="makefriend" />
-                                    @endif
 
-                                    @if ($currentUserDating->hasSentFriendRequestTo($user))
+                                @if ($currentUserDating->hasFriendRequestFrom($user))
+                                    <form class="request-form mt-1 d-inline-block" data-item="{{ $user->id }}"
+                                        action="{{ route('dating.send.request') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $user->id }}" />
+                                        <input type="hidden" name="action" id="action{{ $user->id }}"
+                                            value="acceptrequest" />
+                                        <input type="submit" class="btn btn-sm btn-success"
+                                            id="btn{{ $user->id }}" value="Accept" />
+                                    </form>
+
+                                    <form class="request-form mt-1 d-inline-block" data-item="{{ $user->id }}"
+                                        action="{{ route('dating.send.request') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $user->id }}" />
+                                        <input type="hidden" name="action" id="action{{ $user->id }}"
+                                            value="rejectrequest" />
                                         <input type="submit" class="btn btn-danger btn-sm" id="btn{{ $user->id }}"
-                                            value="Cancel Request" />
+                                            value="Reject" />
+                                    </form>
+                                @else
+                                    @if ($currentUserDating->isBlockedBy($user))
+                                        <input type="button" class="btn btn-sm btn-secondary mt-1"
+                                            value="Blocked By {{ $user->first_name }}" />
                                     @else
-                                        <input type="submit" class="btn btn-primary btn-sm" id="btn{{ $user->id }}"
-                                            value="Send Request" />
+                                        @if ($user->isBlockedBy($currentUserDating))
+                                            <form class="request-form mt-1 d-inline-block" data-item="{{ $user->id }}"
+                                                action="{{ route('dating.send.request') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $user->id }}" />
+                                                <input type="hidden" name="action" id="action{{ $user->id }}"
+                                                    value="unblockfriend" />
+                                                <input type="submit" class="btn btn-success btn-sm"
+                                                    id="btn{{ $user->id }}" value="Unblock" />
+                                            </form>
+                                        @endif
+
+                                        <form class="request-form mt-1 d-inline-block" data-item="{{ $user->id }}"
+                                            action="{{ route('dating.send.request') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $user->id }}" />
+                                            <input type="hidden" name="action" id="action{{ $user->id }}"
+                                                value="makefriend" />
+                                            <input type="submit" class="btn btn-primary btn-sm"
+                                                id="btn{{ $user->id }}" value="Send Request" />
+                                        </form>
                                     @endif
-                                </form>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -64,8 +93,8 @@
         @else
         @endif
     @empty
-        <div class="col-lg-12 mb-4 text-center">
-            <h5><a href="javascript:void(0);">No Records Found!</a></h5>
+        <div class="col-lg-12 mb-4 text-center text-white">
+            <h5>No Records Found!</h5>
         </div>
     @endforelse
 </div>
