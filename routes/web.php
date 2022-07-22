@@ -237,6 +237,7 @@ Route::middleware(['auth'])->group(function () {
 // Dating Routes Start
 Route::middleware(['auth', 'datting.middleware'])->group(function () {
     Route::get('/find-your-date', [DatingController::class, 'findYourDate'])->name('find.your.date');
+    
 });
 
 Route::middleware(['auth'])->name('dating.')->group(function () {

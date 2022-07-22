@@ -51,6 +51,7 @@
                                     <input type="hidden" name="action" id="action{{ $user->id }}" value="blockuser" />
                                     <input type="submit" class="btn btn-primary btn-sm" id="btn{{ $user->id }}" value="Block" />
                                 </form>
+                                <a href="{{url('chat/'.$user->id)}}" class="btn btn-sm btn-primary">Msg</a>
                             @endif
                         </div>
                     </div>

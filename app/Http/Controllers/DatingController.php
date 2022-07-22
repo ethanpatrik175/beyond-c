@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use stdClass;
 
@@ -223,6 +225,21 @@ class DatingController extends Controller
             $image = $request->file('filepond');
             $imageName = $image->getClientOriginalName();
             if ($image->move('assets/frontend/images/users/' . Auth::user()->id, $imageName)) {
+
+                /** Update avatar in users table */
+                try {
+                    $attachment = Str::uuid() . "." . $image->getClientOriginalExtension();
+                    $image->storeAs(config('chatify.attachments.folder'), $attachment, config('chatify.storage_disk_name'));
+
+                    $currentUser = User::find(Auth::user()->id);
+                    $currentUser->avatar = $attachment;
+                    $currentUser->save();
+
+                } catch (\Exception $e) {
+                    Log::error('User Avatar failed to update' . $e->getMessage());
+                }
+                /** End Update avatar in users table */
+
                 $request->session()->put('avatar', $imageName);
                 $data['type'] = 'success';
                 $data['message'] = 'Profile Image uploaded successfully';

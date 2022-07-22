@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="form-group text-start">
                                     <input type="email" name="email" placeholder="Email Address"
-                                        class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required
+                                        class="@error('email') is-invalid @enderror" value="{{ old('email', 'ethanpatrik175@gmail.com') }}" required
                                         autocomplete="email" autofocus />
                                     <div class="invalid-feedback">
                                         Please enter a valid email address.
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="form-group text-start">
                                     <input type="password" name="password"
-                                        class="@error('password') is-invalid @enderror mt-3" value="{{ old('email') }}"
+                                        class="@error('password') is-invalid @enderror mt-3" value="12345678"
                                         required placeholder="Password" />
                                     <div class="invalid-feedback">
                                         Please enter a valid password.
