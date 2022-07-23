@@ -23,6 +23,11 @@ class MessagesController extends Controller
     protected $perPage = 30;
     protected $messengerFallbackColor = '#2180f3';
 
+    public function __construct()
+    {
+        $this->middleware('datting.middleware');
+    }
+
     /**
      * Authenticate the connection for pusher
      *

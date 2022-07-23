@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend/OwlCarousel/dist/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     @routes
     <style>
         /* svg.w-5.h-5 {

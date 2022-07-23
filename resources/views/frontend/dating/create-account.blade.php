@@ -48,8 +48,8 @@
 @section('content')
     <div class="main-container volunteer-signup-page">
         <x-mobile-view-slide />
-
-        <section class="home-banner">
+        <?php $bannerImage = isset($bannerTitle) ? (isset($bannerTitle->image) ? asset('assets/frontend/images/banners/' . Str::of($bannerTitle->image)->replace(' ', '%20')) : '') : ''; ?>
+        <section class="home-banner" style="background: url({{$bannerImage}}) center center no-repeat; background-size: cover;">
             <div class="container center-container">
                 <div class="row align-items-center">
                     <div class="col-lg-5 offset-lg-1">

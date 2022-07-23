@@ -1,5 +1,5 @@
 {{-- ---------------------- Image modal box ---------------------- --}}
-<div id="imageModalBox" class="imageModal">
+<div id="imageModalBox" class="imageModal" style="margin-top:70px;">
     <span class="imageModal-close">&times;</span>
     <img class="imageModal-content" id="imageModalBoxSrc">
   </div>

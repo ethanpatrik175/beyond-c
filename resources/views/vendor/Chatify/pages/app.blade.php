@@ -7,9 +7,11 @@
             color: red;
             font-weight: bold !important;
         }
-
         .red-button {
             color: #ffffff;
+        }
+        .how-it-work::before{
+            display:none !important;
         }
     </style>
 @endpush
@@ -24,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-sm-12">
-        
+
                         {{-- @include('Chatify::layouts.headLinks') --}}
                         <div class="messenger">
                             {{-- ----------------------Users/Groups lists side---------------------- --}}
@@ -113,7 +115,7 @@
                                         {{-- header buttons --}}
                                         <nav class="m-header-right">
                                             <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                                            <a href="/"><i class="fas fa-home"></i></a>
+                                            <a href="{{route('front.welcome')}}"><i class="fas fa-home"></i></a>
                                             <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                                         </nav>
                                     </nav>

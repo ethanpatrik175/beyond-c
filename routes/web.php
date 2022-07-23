@@ -33,6 +33,7 @@ use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 
 /*
@@ -255,8 +256,8 @@ Route::middleware(['auth'])->name('dating.')->group(function () {
     Route::post('/dating/restore', [DatingController::class, 'restoreStep'])->name('restore.step');
     Route::post('/dating/step-back', [DatingController::class, 'stepBack'])->name('step.back');
 
-    Route::get('/subscribe', [DatingController::class, 'subscribe'])->name('subscribe');
-    Route::post('/subscribe-process', [DatingController::class, 'subscribeProcess'])->name('subscribe.process');
+    Route::get('/subscribe', [DatingController::class, 'subscribe'])->name('subscribe')->middleware('subscribe.middleware');
+    Route::post('/subscribe-process', [DatingController::class, 'subscribeProcess'])->name('subscribe.process')->middleware('subscribe.middleware');
 
     Route::post('/send-request', [DatingController::class, 'sendRequest'])->name('send.request');
 
@@ -274,3 +275,7 @@ Route::post('/comment-store', [CommentController::class, 'store'])->name('commen
 Route::post('/create-slug', [GlobalController::class, 'createSlug'])->name('create.slug');
 Route::get('/file-path',  [GlobalController::class, 'getPath'])->name('get.assets.path');
 Route::get('/clear', [GlobalController::class, 'clear'])->name('clear');
+Route::get('/link', function(){
+    Artisan::call('storage:link');
+    return 'Link Created!';
+});

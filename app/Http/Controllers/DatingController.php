@@ -42,7 +42,8 @@ class DatingController extends Controller
         if ($dating) {
             return redirect()->route('find.your.date');
         }
-        return view('frontend.dating.create-account');
+        $data['bannerTitle'] = Banner::where('page',"home")->first();
+        return view('frontend.dating.create-account', $data);
     }
 
     public function stepOneProcess(Request $request)
@@ -268,7 +269,7 @@ class DatingController extends Controller
     public function subscribe()
     {
         $data['pageTitle'] = "Subscribe Package";
-        $data['bannerTitle'] = "Subscribe Package";
+        $data['bannerTitle'] = Banner::where('page',"subscribe")->first();
         $data['packages'] = Subscription::get();
         $data['dating'] = Dating::select('subscription_id')->where('user_id', Auth::user()->id)->first();
         return view('frontend.dating.subscribe', $data);

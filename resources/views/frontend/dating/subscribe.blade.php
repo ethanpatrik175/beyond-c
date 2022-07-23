@@ -77,7 +77,7 @@
                                                     <input type="hidden" name="id" value="{{ $package->id }}" />
                                                     <div class="links mt-2">
                                                         @if(isset($dating->subscription_id) && ($dating->subscription_id == $package->id))
-                                                            <button type="submit" style="margin-left: 0px; background: #c00000; color: #fff;">SUBSCRIBED</button>
+                                                            <button type="button" style="margin-left: 0px; background: #c00000; color: #fff;">SUBSCRIBED</button>
                                                         @elseif(isset($dating->subscription_id) && ($dating->subscription_id != $package->id))
                                                             <button type="submit" style="margin-left: 0px; background: #c00000; color: #fff;">UPGRADE NOW</button>
                                                         @else

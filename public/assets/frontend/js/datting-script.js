@@ -10,7 +10,6 @@ $(document).ready(function () {
             },
             success: function (response) {
                 $('.form-div').LoadingOverlay("hide", true);
-                console.log(response);
                 if (response.type == "error") {
                     $('ul.listErrors').html('<li>' + response.message + '</li>');
                 } else if (response.type == "done") {
@@ -21,6 +20,7 @@ $(document).ready(function () {
                     }, 3000);
                 } else {
                     $('.form-div').html(response);
+                    // $.getScript("../beyond-consulting/assets/frontend/js/filepond-script.js");
                     $.getScript("../assets/frontend/js/filepond-script.js");
                 }
             },
